@@ -23,19 +23,41 @@ void Set(MatrizBit& m,int f,int c,bool v){
 }
 
 bool Leer(std::istream& is,MatrizBit& m){
-    bool fallo = false;
+  bool fallo = false;
   int filas= m.filas, columnas= m.columnas;
+  char booleano;
+  
   if (is.fail())
     fallo = true;
   if (! fallo){
-    if (is.peek() <= 10){
-      is >> m.filas;
-      if (is.peek() <= 10)
-        is >> m.columnas;
-        for (int i=0; i< m.filas; i++){
-          for (int j=0; j< m.columnas; j++)
-            is >> m.matriz[i][j];
+      if (is.peek() <= 10){
+        
+        is >> m.filas;
+        if (is.peek() <= 10){
+          is >> m.columnas;
+          for (int i=0; i< m.filas; i++){
+            for (int j=0; j< m.columnas; j++)
+              is >> m.matriz[i][j];
+          }
         }
+      } 
+      
+      else if ( is.peek() == 'X' || is.peek() == '.' ){
+        int filas=0;
+        bool parada = false;
+          while (( is.peek() == 'X' || is.peek() == '.' ) && (! parada)){
+            if (is.peek() == 'X'){
+              m.matriz[][] = true;
+              is >> booleano;
+            }
+            else if (ispeek() == '.')
+              m.matriz[][] = false;
+              is >> booleano;
+            else 
+              parada = true;
+          }
+      }  
+        
   }
   if (is.fail())
     fallo = true;
