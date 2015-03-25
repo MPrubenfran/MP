@@ -23,7 +23,20 @@ void Set(MatrizBit& m,int f,int c,bool v){
 }
 
 bool Leer(std::istream& is,MatrizBit& m){
-  bool 
+    bool fallo = false;
+  int filas= m.filas, columnas= m.columnas;
+  if (is.fail())
+    fallo = true;
+  if (! fallo){
+    for (int i=0; i< filas; i++){
+      for (int j=0; j< columnas; j++)
+        is >> m.matriz[i][j];
+    }
+  }
+  if (is.fail())
+    fallo = true;
+    
+  return fallo;
   
 }
 bool Escribir(std::ostream& os,const MatrizBit& m);
