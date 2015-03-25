@@ -1,5 +1,5 @@
 
-
+#include <iostream>
 using namespace std;
 
 bool Inicializar (MatrizBit& m, int fils, int fils, int cols);
