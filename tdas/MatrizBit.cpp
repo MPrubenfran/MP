@@ -1,7 +1,6 @@
 
 
-
-
+using namespace std;
 
 bool Inicializar (MatrizBit& m, int fils, int fils, int cols);
 int Filas (const MatrizBit& m);
