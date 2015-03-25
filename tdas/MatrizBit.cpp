@@ -28,10 +28,14 @@ bool Leer(std::istream& is,MatrizBit& m){
   if (is.fail())
     fallo = true;
   if (! fallo){
-    for (int i=0; i< filas; i++){
-      for (int j=0; j< columnas; j++)
-        is >> m.matriz[i][j];
-    }
+    if (is.peek() <= 10){
+      is >> m.filas;
+      if (is.peek() <= 10)
+        is >> m.columnas;
+        for (int i=0; i< m.filas; i++){
+          for (int j=0; j< m.columnas; j++)
+            is >> m.matriz[i][j];
+        }
   }
   if (is.fail())
     fallo = true;
@@ -39,7 +43,16 @@ bool Leer(std::istream& is,MatrizBit& m){
   return fallo;
   
 }
-bool Escribir(std::ostream& os,const MatrizBit& m);
+bool Escribir(std::ostream& os,const MatrizBit& m){
+  bool fallo = false;
+  int filas= m.filas, columnas= m.columnas;
+    for (int i=0; i< filas; i++){
+      for (int j=0; j< columnas; j++)
+        os << m.matriz[i][j];
+    }
+    
+  return fallo;
+}
 bool Leer(const char nombre[],MatrizBit& m);
 bool Escribir(const char nombre[], const MatrizBit& m);
 void Traspuesta(MatrizBit& res,const MatrizBit& m);
