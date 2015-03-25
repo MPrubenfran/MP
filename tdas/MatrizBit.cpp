@@ -2,7 +2,13 @@
 #include <iostream>
 using namespace std;
 
-bool Inicializar (MatrizBit& m, int fils, int fils, int cols);
+bool Inicializar (MatrizBit& m, int fils, int fils, int cols){
+  for (int i=0; i<10; i++){
+    for (int j=0; j<10; j++){
+      m.matriz[i][j] = 0;
+    }
+  }
+}
 int Filas (const MatrizBit& m){
   return m.filas;
 }
