@@ -43,48 +43,42 @@ void Set(MatrizBit& m,int f,int c,bool v){
   m.matriz[f][c] = v;
 }
 
-bool Leer(std::istream& is,MatrizBit& m){
-  bool fallo = false;
+bool Leer(std::istream& is, MatrizBit& m){
+  bool exito = true;
   int filas= m.filas, columnas= m.columnas;
   char booleano;
   
   if (is.fail())
-    fallo = true;
-  if (! fallo){
-      if (is.peek() <= 10){
-        
-        is >> m.filas;
-        if (is.peek() <= 10){
-          is >> m.columnas;
-          for (int i=0; i< m.filas; i++){
-            for (int j=0; j< m.columnas; j++)
-              is >> m.matriz[i][j];
-          }
-        }
-      } 
-      
-      else if ( is.peek() == 'X' || is.peek() == '.' ){
-        int filas=0;
-        bool parada = false;
-          while (( is.peek() == 'X' || is.peek() == '.' ) && (! parada)){
-            if (is.peek() == 'X'){
-              m.matriz[][] = true;
-              is >> booleano;
-            }
-            else if (ispeek() == '.')
-              m.matriz[][] = false;
-              is >> booleano;
-            else 
-              parada = true;
-          }
-      }  
-        
-  }
-  if (is.fail())
-    fallo = true;
-    
-  return fallo;
+    exito = false;
   
+  else{
+   
+   if (PuedeLeerFilas1(is)){
+    is >> m.filas;
+    if (PuedeLeerColumnas1(is)){
+     is >> m.columnas;
+     Lectura1(); //true: éxito
+    }
+    else
+     exito = false;
+   }
+   
+   else if (is.peek() == 'X' || is.peek() == '.'){
+    int filas, columnas;
+    if (PuedeLeerFilas2(is) && PuedeLeerColumnas2(is)){
+     m.filas = filas;
+     m.columnas = columas;
+     Lectura2(); //true: éxito
+    }
+    else
+     exito = false;
+   }
+   
+   else
+    exito = false;
+    
+  }
+  return exito;
 }
 bool Escribir(std::ostream& os,const MatrizBit& m){
   bool fallo = false;
