@@ -10,11 +10,11 @@ using namespace std
 
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
-  if( (fils != m.filas) || (cols != m.columnas) )
+  if( (fils > 10) || (cols > 10) )
     inicializar = false;
   if (inicializar){
-    for (int i=0; i<10; i++){
-      for (int j=0; j<10; j++){
+    for (int i=0; i<fils; i++){
+      for (int j=0; j<cols; j++){
         m.matriz[i][j] = 0;
       }
     }
@@ -49,18 +49,19 @@ bool Leer(std::istream& is, MatrizBit& m){
   if (is.fail())
       exito = false;
   else{
-      if (is.peek() < 11){ // 1
+      if (is.peek() < 101){ // 1
         is >> m.filas;
-        if (is.peek() < 11){
+        if (is.peek() < 101){
          is >> m.columnas;
     //     Lectura1(); //true: éxito
-    //////////////////////////////////////
-            if (! is.fail() ){
+            if ( m.filas * m.columnas < 101 ){
               for (int i=0; i< m.filas; i++){
                 for (int j=0; j< m.columnas; j++)
                 is >> m.matriz[i][j];
               }
             }
+            else
+              exito = false;
         }
         else
           exito= false;
@@ -69,7 +70,7 @@ bool Leer(std::istream& is, MatrizBit& m){
         int i=0, j;
         char caracter;
         
-        while (is.peek() == 'X' || is.peek() == '.'){
+        while ( (is.peek() == 'X' || is.peek() == '.') && exito ){
           j=0;
             while(is.peek() != '\n' && is.peek() != '\t'){
               is >> caracter;
@@ -81,8 +82,12 @@ bool Leer(std::istream& is, MatrizBit& m){
               j++;
             }
             
-          if (i == 0)
-            m.columnas = j;
+          if (i == 0){
+            if (j < 101)
+              m.columnas=j;
+            else
+              exito = false;
+          }
           i++;
             
             while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
@@ -90,13 +95,15 @@ bool Leer(std::istream& is, MatrizBit& m){
           
         }
         m.filas =i;
+        if (m.filas * m.columnas > 100)
+          exito = false;
       }
         //Lectura2(); //true: éxito
       else  // 3
        exito = false;
-     }
       
   }
+  
   return exito;
 }
 
@@ -104,11 +111,12 @@ bool Leer(std::istream& is, MatrizBit& m){
 
 bool Escribir(std::ostream& os,const MatrizBit& m){
   bool exito = true;
+  os << m.filas << " " << m.columnas << endl;
     for (int i=0; i< m.filas; i++){
       for (int j=0; j< m.columnas; j++)
         os << m.matriz[i][j];
     }
-  return fallo;
+  return exito;
 }
 bool Leer(const char nombre[],MatrizBit& m){
   ifstream is(nombre);
