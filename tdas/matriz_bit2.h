@@ -5,7 +5,7 @@
 using namespace std;
 struct MatrizBit2{
   int filas, columnas;
-  bool matriz[10][10];
+  bool matriz[100];
 };
 
 bool Inicializar (MatrizBit& m, int fils, int fils, int cols);
