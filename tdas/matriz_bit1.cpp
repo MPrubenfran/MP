@@ -93,7 +93,7 @@ bool Leer(std::istream& is, MatrizBit& m){
         //Lectura2(); //true: éxito
       else  // 3
        exito = false;
-     }
+     
       
   }
   return exito;
