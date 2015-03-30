@@ -107,6 +107,7 @@ bool Escribir(std::ostream& os,const MatrizBit& m){
     for (int i=0; i< m.filas; i++){
       for (int j=0; j< m.columnas; j++)
         os << m.matriz[i][j];
+      os << endl;
     }
   return exito;
 }
