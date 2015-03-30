@@ -3,7 +3,7 @@
 #include <iostream>
 #include "MatrizBit.h"
 using namespace std;
-struct MatrizBit1{
+struct MatrizBit2{
   int filas, columnas;
   bool matriz[10][10];
 };
