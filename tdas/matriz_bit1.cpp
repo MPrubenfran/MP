@@ -103,11 +103,12 @@ bool Leer(std::istream& is, MatrizBit& m){
 
 bool Escribir(std::ostream& os,const MatrizBit& m){
   bool exito = true;
+  os << m.filas << " " << m.columnas << endl;
     for (int i=0; i< m.filas; i++){
       for (int j=0; j< m.columnas; j++)
         os << m.matriz[i][j];
     }
-  return fallo;
+  return exito;
 }
 bool Leer(const char nombre[],MatrizBit& m){
   ifstream is(nombre);
