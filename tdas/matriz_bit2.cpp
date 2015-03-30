@@ -13,10 +13,8 @@ bool Inicializar (MatrizBit& m, int fils, int cols){
   if( (fils > 10) || (cols > 10) )
     inicializar = false;
   if (inicializar){
-    for (int i=0; i<fils; i++){
-      for (int j=0; j<cols; j++){
-        m.matriz[i][j] = 0;
-      }
+    for (int i=0; i<fils*cols; i++)
+        m.matriz[i] = 0;
     }
   }
   
@@ -31,13 +29,13 @@ int Columnas (const MatrizBit& m){
 }
 bool Get(const MatrizBit& m,int f,int c){
   if ( (f<m.filas) && (c<m.columnas) )
-    return m.matriz[f][c];
+    return m.matriz[f*m.columnas + c];
   else
     return 0;
 }
 void Set(MatrizBit& m, int f,int c,bool v){
   if ( (f < m.filas) && (c < m.columnas) )
-      m.matriz[f][c] = v;
+      m.matriz[f*m.columnas + c] = v;
 }
 
 
@@ -55,9 +53,8 @@ bool Leer(std::istream& is, MatrizBit& m){
          is >> m.columnas;
     //     Lectura1(); //true: éxito
             if ( m.filas * m.columnas < 101 ){
-              for (int i=0; i< m.filas; i++){
-                for (int j=0; j< m.columnas; j++)
-                is >> m.matriz[i][j];
+              for (int i=0; i< m.filas*m.columnas; i++){
+                is >> m.matriz[i*m.columnas + j];
               }
             }
             else
@@ -69,15 +66,16 @@ bool Leer(std::istream& is, MatrizBit& m){
       else if (is.peek() == 'X' || is.peek() == '.'){ // 2
         int i=0, j;
         char caracter;
+        m.columnas =0;
         
         while ( (is.peek() == 'X' || is.peek() == '.') && exito ){
           j=0;
             while(is.peek() != '\n' && is.peek() != '\t'){
               is >> caracter;
               if (caracter == 'X')
-                m.matriz[i][j] = true;
+                m.matriz[i*m.columnas +j] = true;
               else
-                m.matriz[i][j] = false;
+                m.matriz[i*m.columnas +j] = false;
               
               j++;
             }
@@ -114,7 +112,8 @@ bool Escribir(std::ostream& os,const MatrizBit& m){
   os << m.filas << " " << m.columnas << endl;
     for (int i=0; i< m.filas; i++){
       for (int j=0; j< m.columnas; j++)
-        os << m.matriz[i][j];
+        os << m.matriz[i*m.columnas + j];
+      os << endl;
     }
   return exito;
 }
@@ -133,22 +132,27 @@ bool Escribir(const char nombre[], const MatrizBit& m){
 void Traspuesta(MatrizBit& res,const MatrizBit& m){
   res.filas = m.columnas,
   res.columnas = m.filas;
-  for (int i=0; i< res.filas; i++){
-    for (int j=0; j< res.columnas; j++)
-      res.matriz[i][j] = m.matriz[j][i];
-  }
+  
+    for (int i=0; i< m.filas; i++){
+      for (int j=0; j< m.columnas; j++)
+         res.matriz[j*m.filas + i] = m.matriz[i*m.columnas + j];
+    }
+    
+    
 }
+
+
 void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
     res.filas = m1.filas;
     res.columnas = m1.columnas;
-    for (int i=0; i< res.filas; i++){
-      for (int j=0; j< res.columnas; j++){
-        if ( (m1.matriz[i][j] == false) || (m2.matriz[i][j] == false) ) // 0 false; 1 true;
-          res.matriz[i][j] = false;
+    for (int i=0; i< res.filas * res.columnas; i++){
+
+        if ( (m1.matriz[i] == false) || (m2.matriz[i] == false) ) // 0 false; 1 true;
+          res.matriz[i] = false;
         else
-          res.matriz[i][j] = true;
-      }
+          res.matriz[i] = true;
+      
     }
   }
 }
@@ -156,13 +160,12 @@ void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
     res.filas = m1.filas;
     res.columnas = m1.columnas;
-    for (int i=0; i< res.filas; i++){
-      for (int j=0; j< res.columnas; j++){
-        if ( (m1.matriz[i][j] == true) || (m2.matriz[i][j] == true) ) // 0 false; 1 true;
-          res.matriz[i][j] = true;
+    for (int i=0; i< res.filas*res.columnas; i++){
+        if ( (m1.matriz[i] == true) || (m2.matriz[i] == true) ) // 0 false; 1 true;
+          res.matriz[i] = true;
         else
-          res.matriz[i][j] = false;
-      }
+          res.matriz[i] = false;
+      
     }
   }
   
@@ -171,9 +174,8 @@ void Not(MatrizBit& res,const MatrizBit& m){
   if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
     res.filas = m1.filas;
     res.columnas = m1.columnas;
-    for (int i=0; i< res.filas; i++){
-      for (int j=0; j< res.columnas; j++)
-        res.matriz[i][j] = ! m.matriz[i][j];
+    for (int i=0; i< res.filas*res.columnas; i++){
+        res.matriz[i] = ! m.matriz[i];
     }
   }
 }
