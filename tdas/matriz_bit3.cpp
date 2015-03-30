@@ -18,10 +18,10 @@ m.matriz[i][j] = 0;
 return inicializar;
 }
 int Filas (const MatrizBit& m){
-return m.filas;
+  return (m.dimension >> 16);
 }
 int Columnas (const MatrizBit& m){
-return m.columnas;
+  return ((m.dimension << 16) >> 16);
 }
 bool Get(const MatrizBit& m,int f,int c){
 if ( (f<m.filas) && (c<m.columnas) )
