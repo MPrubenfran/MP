@@ -9,7 +9,7 @@ using namespace std
 
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
-  if( (fils != m.filas) || (cols != m.columnas) )
+  if( (fils > 10) || (cols > 10) )
     inicializar = false;
   if (inicializar){
     for (int i=0; i<10; i++){
