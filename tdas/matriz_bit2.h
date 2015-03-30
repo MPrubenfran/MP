@@ -1,5 +1,5 @@
-#ifndef matrizbit1_h
-#define matrizbit1_h
+#ifndef matrizbit2_h
+#define matrizbit2_h
 #include <iostream>
 #include "MatrizBit.h"
 using namespace std;
