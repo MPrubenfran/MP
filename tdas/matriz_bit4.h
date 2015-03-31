@@ -4,7 +4,7 @@
 #include "MatrizBit.h"
 using namespace std;
 struct MatrizBit3{
-  unsigned int matriz[4]n;
+  unsigned int matriz[4];
   unsigned short int dimension;
 };
 
