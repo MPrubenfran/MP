@@ -4,8 +4,8 @@
 #include "MatrizBit.h"
 using namespace std;
 struct MatrizBit3{
-  unsigned int matriz[4];
-  unsigned short int dimension;
+  unsigned int matriz[4]; // 32*4=128 bits.
+  unsigned short int dimension; // 8(filas)+8(columnas) bits
 };
 
 bool Inicializar (MatrizBit& m, int fils, int fils, int cols);
