@@ -55,14 +55,11 @@ bool Leer(std::istream& is, MatrizBit& m){
                 for (int j=0; j< m.columnas; j++)
                 is >> m.matriz[i][j];
               }
-            }
-            else{ 
+        }
+        else{ 
               cout << "No se ha podido leer la matriz." << endl;
               exito = false; 
-            }  
         }
-        else
-          exito= false;
       }
       else if (is.peek() == 'X' || is.peek() == '.'){ // 2
         int i=0, j;
