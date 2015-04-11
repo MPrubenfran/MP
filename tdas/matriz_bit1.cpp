@@ -44,8 +44,6 @@ void Set(MatrizBit& m, int f,int c,bool v){
 /////////////////////////////////////Resto de funcinoes
 bool Leer(std::istream& is, MatrizBit& m){
   bool exito = true;
-  int filas= m.filas, columnas= m.columnas;
-  char booleano;
   if (is.fail())
       exito = false;
   else{
