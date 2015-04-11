@@ -63,26 +63,26 @@ void Set(MatrizBit& m, int f,int c,bool v){
 bool Leer(std::istream& is, MatrizBit& m){
   bool exito = true;
   int filas, columnas;
-  char caracter;
+  bool caracter;
   if (is.fail())
     exito = false;
   else{
-    if (is.peek() < 101){ // 1
-    is >> filas;
-    if (is.peek() < 101){
-    is >> columnas;
-    // Lectura1(); //true: éxito
-    //////////////////////////////////////
-    if (! is.fail() && filas*columnas < 101){
-    Inicializar(m, filas, columnas),
-    for (int i=0; i< filas; i++){
-      for (int j=0; j< columnas; j++){
-          is >> caracter;
-        if (caracter == 1)
-          m.matriz[i*columnas + j] = true;
+    if (is.peek() < 128){
+      is >> filas;
+      if ((is.peek() * filas) < 128){
+        is >> columnas;
+        if (! is.fail()){
+          Inicializar(m, filas, columnas),
+          for (int i=0; i< filas; i++){
+            for (int j=0; j< columnas; j++){
+              is >> caracter;
+              Set(m, i, j, caracter);
+            }
+          }
+        }
       }
     }
-    }
+  }
     else
       exito=false;
     }
@@ -120,20 +120,19 @@ bool Leer(std::istream& is, MatrizBit& m){
   }
   return exito;
 }
+
 bool Escribir(std::ostream& os,const MatrizBit& m){
-bool exito = true;
-os << m.filas << " " << m.columnas << endl;
-for (int i=0; i< Filas(m); i++){
-for (int j=0; j< Columnas(m); j++){
-if (m.matriz[i*Columnas(m) + j] == 1)
-  os << "1 ";
-else
-  os << "0 ";
+  bool exito = true;
+  os << Filas(m) << " " << Columnas(m) << endl;
+  for (int i=0; i< Filas(m); i++){
+    for (int j=0; j< Columnas(m); j++){
+      os << Get(m, i, j);
+    }
+    os << endl;
+  }
+    return exito;
 }
-os << endl;
-}
-  return exito;
-}
+
 bool Leer(const char nombre[],MatrizBit& m){
   ifstream is(nombre);
   bool exito = Leer(is, m);
