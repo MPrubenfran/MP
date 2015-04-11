@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){
         Escribir(cout, resultado);
       }
       else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
-        Leer(f), ejemplo1);
+        Leer(f, ejemplo1);
         Traspuesta(resultado, ejemplo1);
         Escribir(cout, resultado);
       }
