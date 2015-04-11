@@ -2,7 +2,6 @@
 #define matrizbit1_h
 
 #include <iostream>
-#include "MatrizBit.h"
 using namespace std;
 
 struct MatrizBit{
