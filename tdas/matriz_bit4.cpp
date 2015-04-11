@@ -58,65 +58,77 @@ void Set(MatrizBit& m, int f,int c,bool v){
     matriz[e] = matriz[e] & aux;
   }
 }
+void Set2(MatrizBit& m, int pos,bool v){
+    int e, d;
+    e = pos / 32;
+    d = pos % 32;
+    aux = 1 << d;
+    
+    matriz[e] = matriz[e] | aux;
+    aux *= v;
+    
+    matriz[e] = matriz[e] & aux;
+  }
+}
 
 /////////////////////////////////////Resto de funcinoes
 bool Leer(std::istream& is, MatrizBit& m){
-  bool exito = true;
   int filas, columnas;
-  bool caracter;
+  bool aux;
+  bool exito = true;
+  
   if (is.fail())
-    exito = false;
+      exito = false;
   else{
-    if (is.peek() < 128){
-      is >> filas;
-      if ((is.peek() * filas) < 128){
+      if ( (is.peek() != 'X') && (is.peek() != '.')){ // 1
+        is >> filas;
         is >> columnas;
-        if (! is.fail()){
-          Inicializar(m, filas, columnas),
-          for (int i=0; i< filas; i++){
-            for (int j=0; j< columnas; j++){
-              is >> caracter;
-              Set(m, i, j, caracter);
-            }
+
+        if (! is.fail() && (filas * columnas <= 128)){
+          Inicializar(m, filas, columnas);
+          for (int i=0; i<filas; i++){
+            for (int j=0; j<columnas; j++)
+            is >> aux;
+            Set(m, i, j, aux);
           }
         }
-      }
-    }
-  }
-    else
-      exito=false;
-    }
-    else
-      exito= false;
-    }
-    else if (is.peek() == 'X' || is.peek() == '.'){ // 2
-      int i=0, j;
-      filas = columnas = 0;
-      unsigned int dim=0, aux=0;
-      while (is.peek() == 'X' || is.peek() == '.'){
-        j=0;
-        while(is.peek() != '\n' && is.peek() != '\t'){
-        is >> caracter;
-        if (caracter == 'X')
-          m.matriz[i*columnas + j] = true;
-        else
-          m.matriz[i*columnas + j] = false;
-        j++;
+        else{ 
+              cout << "No se ha podido leer la matriz." << endl;
+              exito = false; 
         }
-      if (i == 0)
-        columnas = j;
-      i++;
-      while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
-        is.get(caracter); // Controlamos la entrada de datos saltando línea
       }
-      filas =i;
-      dim = (dim | columnas); // Operador OR a nivel de bit.
-      aux = (filas << 16);
-      dim += aux;
-      m.dimension = dim;
-    }
-    else // 3
-      exito = false;
+      else if (is.peek() == 'X' || is.peek() == '.'){ // 2
+        int i=0, j;
+        int p=0
+        char caracter;
+        
+        while (is.peek() == 'X' || is.peek() == '.'){
+          j=0;
+            while(is.peek() != '\n'){
+              is >> caracter;
+              if (caracter == 'X')
+                Set2(m, p, true);
+              else
+                Set2(m, p, false);
+              p++;
+              j++;
+            }
+            
+          if (i == 0)
+            m.columnas = j;
+          i++;
+            
+            while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
+              is.get(caracter); // Controlamos la entrada de datos saltando línea
+          
+        }
+        m.filas =i;
+      }
+        //Lectura2(); //true: éxito
+      else  // 3
+       exito = false;
+     
+      
   }
   return exito;
 }
