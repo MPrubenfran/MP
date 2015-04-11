@@ -99,7 +99,7 @@ int main(int argc, char* argv[]){
         OR(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
-    
+    }
   }
 
 cout << endl;
