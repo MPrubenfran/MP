@@ -46,11 +46,11 @@ bool Leer(std::istream& is, MatrizBit& m){
   if (is.fail())
       exito = false;
   else{
-      if ( (is.peek() != 'X') && (is.peek() != '.'){ // 1
+      if ( (is.peek() != 'X') && (is.peek() != '.')){ // 1
         is >> m.filas;
          is >> m.columnas;
 
-            if (! is.fail() && m.filas < 11 && m.columnas < 11){
+        if (! is.fail() && m.filas < 11 && m.columnas < 11){
               for (int i=0; i< m.filas; i++){
                 for (int j=0; j< m.columnas; j++)
                 is >> m.matriz[i][j];
