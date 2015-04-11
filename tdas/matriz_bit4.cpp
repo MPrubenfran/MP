@@ -1,9 +1,11 @@
-#include "matriz_bit.h" // Aquí se define el valor de CUAL_COMPILO
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "matriz_bit.h" // Aquí se define el valor de CUAL_COMPILO
+#include "matriz_operaciones.cpp"
 using namespace std
-/////////////////////////////////////////////////////////////////////////////////////////////////matriz_bit.cpp
+
+
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
   unsigned short int dim=0, aux=0;
@@ -158,43 +160,4 @@ bool Escribir(const char nombre[], const MatrizBit& m){
   ofstream os(nombre);
   bool exito= Escribir(os, m);
   return exito;
-}
-void Traspuesta(MatrizBit& res,const MatrizBit& m){
-  unsigned int dim = ((m.dimension >> 16) << 16);
-  dim += ((m.dimension << 16) >> 16);
-  res.dimension = dim;
-  for (int i=0; i< Filas(m); i++){
-    for (int j=0; j< Columnas(m); j++)
-      res.matriz[j*Filas(m) + i] = m.matriz[i*Columnas(m) + j];
-  }
-}
-void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
-  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-    res.dimension = m1.dimension;
-    for (int i=0; i< Filas(res)*Columnas(res); i++){
-      if ( (m1.matriz[i] == false) || (m2.matriz[i] == false) ) // 0 false; 1 true;
-        res.matriz[i] = false;
-      else
-        res.matriz[i] = true;
-    }
-  }
-}
-void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
-  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-  res.dimension = m1.dimension;
-    for (int i=0; i< Filas(res)*Columnas(res); i++){
-      if ( (m1.matriz[i] == true) || (m2.matriz[i] == true) ) // 0 false; 1 true;
-        res.matriz[i] = true;
-      else
-      res.matriz[i] = false;
-    }
-  }
-}
-void Not(MatrizBit& res,const MatrizBit& m){
-  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-    res.dimension = m1.dimension;
-      for (int i=0; i< Filas(res)*Columnas(res); i++){
-        res.matriz[i] = ! m.matriz[i];
-      }
-  }
 }
