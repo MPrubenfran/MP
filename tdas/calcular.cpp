@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string.h>
 #include "matriz_bit.h"
 #include "matriz_operaciones.h"
 using namespace std;
@@ -12,23 +13,23 @@ int main(int argc, char* argv[]){
   else if (argc == 2){ // Si no hemos dado parámetros leemos los dos ficheros por la entrada estándar.
     MatrizBit ejemplo1, ejemplo2, resultado;
     
-    if( (argv[1] == "NOT") ||(argv[1] == "Not") || (argv[1] == "not") ){
+    if (strcmp(argv[1], "NOT")){
       Leer(cin, ejemplo1);
       Not(resultado, ejemplo1);
       Escribir(cout, resultado);
     }
-    else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
+    else if (strcmp(argv[1], "TRS")){
       Leer(cin, ejemplo1);
       Traspuesta(resultado, ejemplo1);
       Escribir(cout, resultado);
     }
-    else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
+    else if (strcmp(argv[1], "AND")){
       Leer(cin, ejemplo1);
       Leer(cin, ejemplo2);
       And(resultado, ejemplo1, ejemplo2);
       Escribir(cout, resultado);
     }
-    else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
+    else if (strcmp(argv[1], "OR")){
       Leer(cin, ejemplo1);
       Leer(cin, ejemplo2);
       Or(resultado, ejemplo1, ejemplo2);
@@ -44,23 +45,23 @@ int main(int argc, char* argv[]){
       return 1;
     }
     else{
-      if( (argv[1] == "NOT") ||(argv[1] == "Not") || (argv[1] == "not") ){
+      if (strcmp(argv[1], "NOT")){
         Leer(f, ejemplo1);
         Not(resultado, ejemplo1);
         Escribir(cout, resultado);
       }
-      else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
+      else if (strcmp(argv[1], "TRS")){
         Leer(f, ejemplo1);
         Traspuesta(resultado, ejemplo1);
         Escribir(cout, resultado);
       }
-      else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
+      else if (strcmp(argv[1], "AND")){
         Leer(f, ejemplo1);
         Leer(cin, ejemplo2);
         And(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
-      else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
+      else if (strcmp(argv[1], "OR")){
         Leer(f, ejemplo1);
         Leer(cin, ejemplo2);
         Or(resultado, ejemplo1, ejemplo2);
@@ -80,21 +81,21 @@ int main(int argc, char* argv[]){
       return 1;
     }
     else{
-      if( (argv[1] == "NOT") ||(argv[1] == "Not") || (argv[1] == "not") ){
+      if (strcmp(argv[1], "NOT")){
         cerr << "Operación unaria \"NOT\" no permitida.\n";
         return 1;
       }
-      else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
+      else if (strcmp(argv[1], "TRS")){
         cerr << "Operación unaria \"TRS\" no permitida.\n";
         return 1;
       }
-      else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
+      else if (strcmp(argv[1], "AND")){
         Leer(f, ejemplo1);
         Leer(g, ejemplo2);
         And(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
-      else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
+      else if (strcmp(argv[1], "OR")){
         Leer(f, ejemplo1);
         Leer(g, ejemplo2);
         Or(resultado, ejemplo1, ejemplo2);
