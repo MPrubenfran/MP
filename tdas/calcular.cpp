@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "matriz_bit.h"
+#include "matriz_operaciones.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
