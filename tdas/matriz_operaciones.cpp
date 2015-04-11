@@ -1,7 +1,8 @@
-#include "matriz_operaciones.h"
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "matriz_operaciones.h"
+#include "matriz_bit.h"
 
 void Traspuesta(MatrizBit& res,const MatrizBit& m){
   int filas, columnas;
