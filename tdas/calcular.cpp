@@ -35,6 +35,9 @@ int main(int argc, char* argv[]){
       Or(resultado, ejemplo1, ejemplo2);
       Escribir(cout, resultado);
     }
+    else{
+      cout << "Operación inválida"
+    }
   }
 //////////////////////////// Primera matriz se lee desde fichero y la otra por la entrada estándar.
   else if (argc == 3){ 
@@ -67,9 +70,13 @@ int main(int argc, char* argv[]){
         Or(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
+      else{
+        cout << "Operación inválida"
+      }
+    }
   }
 ///////////////////////////// Ambas matrices se leen desde fichero.
-  else if (arg == 4){
+  else if (argc == 4){
     ifstream f(argv[2]); // Como parámetro, el nombre del primer archivo.
     ifstream g(argv[3]); // Como parámetro, el nombre del segundo archivo.
     MatrizBit ejemplo1, ejemplo2, resultado;
@@ -100,6 +107,9 @@ int main(int argc, char* argv[]){
         Leer(g, ejemplo2);
         Or(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
+      }
+      else{
+        cout << "Operación inválida"
       }
     }
   }
