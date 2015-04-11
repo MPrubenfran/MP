@@ -53,7 +53,6 @@ void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
 }
 void Not(MatrizBit& res,const MatrizBit& m){
   int filas, columnas;
-  bool aux;
   
   filas = Filas(m);
   columnas = Columnas(m);
