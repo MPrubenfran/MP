@@ -1,7 +1,8 @@
-#include "matriz_bit.h" // Aquí se define el valor de CUAL_COMPILO
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "matriz_bit.h" // Aquí se define el valor de CUAL_COMPILO
+#include "matriz_operaciones.cpp"
 using namespace std
 /////////////////////////////////////////////////////////////////////////////////////////////////matriz_bit.cpp
 bool Inicializar (MatrizBit& m, int fils, int cols){
