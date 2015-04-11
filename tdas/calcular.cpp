@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
       Escribir(cout, resultado);
     }
     else{
-      cout << "Operación inválida"
+      cout << "Operación inválida";
     }
   }
 //////////////////////////// Primera matriz se lee desde fichero y la otra por la entrada estándar.
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
         Escribir(cout, resultado);
       }
       else{
-        cout << "Operación inválida"
+        cout << "Operación inválida";
       }
     }
   }
@@ -109,7 +109,7 @@ int main(int argc, char* argv[]){
         Escribir(cout, resultado);
       }
       else{
-        cout << "Operación inválida"
+        cout << "Operación inválida";
       }
     }
   }
