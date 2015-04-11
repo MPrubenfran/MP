@@ -57,7 +57,7 @@ void Not(MatrizBit& res,const MatrizBit& m){
   filas = Filas(m);
   columnas = Columnas(m);
   
-  Set(res, filas, columnas, aux);
+  Inicializar(res, filas, columnas);
   
   for (int i=0; i < filas; i++){
     for (int j=0; j < columnas; j++){
