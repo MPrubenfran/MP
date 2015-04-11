@@ -4,6 +4,24 @@
 #include "matriz_operaciones.h"
 #include "matriz_bit.h"
 
+bool Escribir(std::ostream& os,const MatrizBit& m){
+  bool exito = true;
+  os << Filas(m) << " " << Columnas(m) << endl;
+  for (int i=0; i< Filas(m); i++){
+    for (int j=0; j< Columnas(m); j++){
+      os << Get(m, i, j) << " ";
+    }
+    os << endl;
+  }
+    return exito;
+}
+
+bool Escribir(const char nombre[], const MatrizBit& m){
+  ofstream os(nombre);
+  bool exito= Escribir(os, m);
+  return exito;
+}
+
 void Traspuesta(MatrizBit& res,const MatrizBit& m){
   int filas, columnas;
   bool aux;
