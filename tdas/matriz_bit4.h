@@ -3,7 +3,7 @@
 #include <iostream>
 #include "MatrizBit.h"
 using namespace std;
-struct MatrizBit3{
+struct MatrizBit4{
   unsigned int matriz[4]; // 32*4=128 bits.
   unsigned short int dimension; // 8(filas)+8(columnas) bits
 };
