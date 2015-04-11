@@ -23,41 +23,46 @@ void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   
   if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
     filas = Filas(m1);
-    columnas = Columnas(m1)
+    columnas = Columnas(m1);
     Inicializar(res, filas, columnas);
     
     for (int i=0; i < filas; i++){
       for (int j=0; j< columnas; j++){
-        if ( (m1.matriz[i][j] == false) || (m2.matriz[i][j] == false) ) // 0 false; 1 true;
-          res.matriz[i][j] = false;
-        else
-          res.matriz[i][j] = true;
+        aux = Get(m1, filas, columnas) && Get(m2, filas, columnas);
+        Set(res, filas, columnas, aux);
       }
     }
   }
 }
 void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
-  if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
-    res.filas = m1.filas;
-    res.columnas = m1.columnas;
-    for (int i=0; i< res.filas; i++){
-      for (int j=0; j< res.columnas; j++){
-        if ( (m1.matriz[i][j] == true) || (m2.matriz[i][j] == true) ) // 0 false; 1 true;
-          res.matriz[i][j] = true;
-        else
-          res.matriz[i][j] = false;
+  int filas, columnas;
+  bool aux;
+  
+  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
+    filas = Filas(m1);
+    columnas = Columnas(m1);
+    Inicializar(res, filas, columnas);
+    
+    for (int i=0; i < filas; i++){
+      for (int j=0; j< columnas; j++){
+        aux = Get(m1, filas, columnas) || Get(m2, filas, columnas);
+        Set(res, filas, columnas, aux);
       }
     }
   }
-  
 }
 void Not(MatrizBit& res,const MatrizBit& m){
-  if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
-    res.filas = m1.filas;
-    res.columnas = m1.columnas;
-    for (int i=0; i< res.filas; i++){
-      for (int j=0; j< res.columnas; j++)
-        res.matriz[i][j] = ! m.matriz[i][j];
-    }
+  int filas, columnas;
+  bool aux;
+  
+  filas = Filas(m);
+  columnas = Columnas(m);
+  
+  Set(res, filas, columnas, aux);
+  
+  for (int i=0; i < filas; i++){
+    for (int j=0; j < columnas; j++)
+      aux = !Get(m, filas, columnas);
+      Set(res, filas, columnas, aux);
   }
 }
