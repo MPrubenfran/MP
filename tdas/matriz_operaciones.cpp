@@ -3,60 +3,61 @@
 #include <string>
 #include <fstream>
 
-bool Leer(std::istream& is, MatrizBit& m){
-  bool exito = true;
-  int filas= m.filas, columnas= m.columnas;
-  char booleano;
-  if (is.fail())
-      exito = false;
-  else{
-      if (is.peek() < 11){ // 1
-        is >> m.filas;
-        if (is.peek() < 11){
-         is >> m.columnas;
-    //     Lectura1(); //true: éxito
-    //////////////////////////////////////
-            if (! is.fail() ){
-              for (int i=0; i< m.filas; i++){
-                for (int j=0; j< m.columnas; j++)
-                is >> m.matriz[i][j];
-              }
-            }
-        }
-        else
-          exito= false;
-      }
-      else if (is.peek() == 'X' || is.peek() == '.'){ // 2
-        int i=0, j;
-        char caracter;
-        
-        while (is.peek() == 'X' || is.peek() == '.'){
-          j=0;
-            while(is.peek() != '\n' && is.peek() != '\t'){
-              is >> caracter;
-              if (caracter == 'X')
-                m.matriz[i][j] = true;
-              else
-                m.matriz[i][j] = false;
-              
-              j++;
-            }
-            
-          if (i == 0)
-            m.columnas = j;
-          i++;
-            
-            while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
-              is.get(caracter); // Controlamos la entrada de datos saltando línea
-          
-        }
-        m.filas =i;
-      }
-        //Lectura2(); //true: éxito
-      else  // 3
-       exito = false;
-     
-      
+void Traspuesta(MatrizBit& res,const MatrizBit& m){
+  int filas, columnas;
+  bool aux;
+  
+  filas = Filas(m);
+  columnas = Columnas(m);
+  
+  Inicializar(res, columnas, filas);
+  for (int i=0; i< filas; i++){
+    for (int j=0; j< columnas; j++)
+      aux = Get(m, filas, columnas);
+      Set(res, columnas, filas, aux);
   }
-  return exito;
+}
+void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
+  int filas, columnas;
+  bool aux;
+  
+  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
+    filas = Filas(m1);
+    columnas = Columnas(m1)
+    Inicializar(res, filas, columnas);
+    
+    for (int i=0; i < filas; i++){
+      for (int j=0; j< columnas; j++){
+        if ( (m1.matriz[i][j] == false) || (m2.matriz[i][j] == false) ) // 0 false; 1 true;
+          res.matriz[i][j] = false;
+        else
+          res.matriz[i][j] = true;
+      }
+    }
+  }
+}
+void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
+  if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
+    res.filas = m1.filas;
+    res.columnas = m1.columnas;
+    for (int i=0; i< res.filas; i++){
+      for (int j=0; j< res.columnas; j++){
+        if ( (m1.matriz[i][j] == true) || (m2.matriz[i][j] == true) ) // 0 false; 1 true;
+          res.matriz[i][j] = true;
+        else
+          res.matriz[i][j] = false;
+      }
+    }
+  }
+  
+}
+void Not(MatrizBit& res,const MatrizBit& m){
+  if ( (m1.filas == m2.filas) && (m1.columnas == m2.columnas) ){
+    res.filas = m1.filas;
+    res.columnas = m1.columnas;
+    for (int i=0; i< res.filas; i++){
+      for (int j=0; j< res.columnas; j++)
+        res.matriz[i][j] = ! m.matriz[i][j];
+    }
+  }
 }
