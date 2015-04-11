@@ -19,19 +19,19 @@ int main(int argc, char* argv[]){
     }
     else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
       Leer(cin, ejemplo1);
-      TRS(resultado, ejemplo1);
+      Traspuesta(resultado, ejemplo1);
       Escribir(cout, resultado);
     }
     else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
       Leer(cin, ejemplo1);
       Leer(cin, ejemplo2);
-      AND(resultado, ejemplo1, ejemplo2);
+      And(resultado, ejemplo1, ejemplo2);
       Escribir(cout, resultado);
     }
     else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
       Leer(cin, ejemplo1);
       Leer(cin, ejemplo2);
-      OR(resultado, ejemplo1, ejemplo2);
+      Or(resultado, ejemplo1, ejemplo2);
       Escribir(cout, resultado);
     }
   }
@@ -51,19 +51,19 @@ int main(int argc, char* argv[]){
       }
       else if( (argv[1] == "TRS") ||(argv[1] == "Trs") || (argv[1] == "trs")  ){
         Leer(f), ejemplo1);
-        TRS(resultado, ejemplo1);
+        Traspuesta(resultado, ejemplo1);
         Escribir(cout, resultado);
       }
       else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
         Leer(f, ejemplo1);
         Leer(cin, ejemplo2);
-        AND(resultado, ejemplo1, ejemplo2);
+        And(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
       else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
         Leer(f, ejemplo1);
         Leer(cin, ejemplo2);
-        OR(resultado, ejemplo1, ejemplo2);
+        Or(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
   }
@@ -91,13 +91,13 @@ int main(int argc, char* argv[]){
       else if ( (argv[1] == "AND") ||(argv[1] == "And") || (argv[1] == "and")  ){
         Leer(f, ejemplo1);
         Leer(g, ejemplo2);
-        AND(resultado, ejemplo1, ejemplo2);
+        And(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
       else if ( (argv[1] == "OR") ||(argv[1] == "Or") || (argv[1] == "or")  ){
         Leer(f, ejemplo1);
         Leer(g, ejemplo2);
-        OR(resultado, ejemplo1, ejemplo2);
+        Or(resultado, ejemplo1, ejemplo2);
         Escribir(cout, resultado);
       }
     }
