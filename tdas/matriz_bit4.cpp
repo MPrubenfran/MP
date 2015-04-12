@@ -37,7 +37,7 @@ bool Get(const MatrizBit& m, int f, int c){
     pos = f*Columnas(m) + c;
     e = pos / 32;
     d = pos % 32;
-    casilla = (m.matriz[e] >> d) & 1;
+    casilla = (m.matriz[e] >> d) & 1; // En todo caso sería [>> (31 -d)].
   }
   return casilla;
 }
