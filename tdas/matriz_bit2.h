@@ -4,7 +4,7 @@
 #include "MatrizBit.h"
 using namespace std;
 
-struct MatrizBit2{
+struct MatrizBit{
   int filas, columnas;
   bool matriz[100];
 };
