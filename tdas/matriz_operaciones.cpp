@@ -31,9 +31,10 @@ void Traspuesta(MatrizBit& res,const MatrizBit& m){
   
   Inicializar(res, columnas, filas);
   for (int i=0; i< filas; i++){
-    for (int j=0; j< columnas; j++)
+    for (int j=0; j< columnas; j++){
       aux = Get(m, i, j);
       Set(res, j, i, aux);
+    }
   }
 }
 void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
