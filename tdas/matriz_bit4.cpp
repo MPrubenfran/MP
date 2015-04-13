@@ -25,7 +25,7 @@ int Filas (const MatrizBit& m){
 }
 
 int Columnas (const MatrizBit& m){
-  int cols = (m.dimension << 8) >> 8;
+  int cols = m.dimension & 255;
   return cols;
 }
 
