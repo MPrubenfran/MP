@@ -5,6 +5,14 @@
 #include "matriz_operaciones.h"
 using namespace std;
 
+
+bool  DimensionesIguales(const MatrizBit& m1, const MatrizBit& m2){
+    bool exito = false;
+    if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) )
+        exito = true;
+    return exito;
+}
+
 int main(int argc, char* argv[]){
     MatrizBit ejemplo1, ejemplo2, resultado;
     bool booleano = true;
@@ -28,15 +36,23 @@ int main(int argc, char* argv[]){
       }  
     }
     else if (strcmp(argv[1], "AND") == 0){
-      if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) )
-        And(resultado, ejemplo1, ejemplo2);
+      if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) ){
+        if ( DimensionesIguales(ejemplo1, ejemplo2) )
+            And(resultado, ejemplo1, ejemplo2);
+        else
+            cout << "Dimensiones de las matrices diferentes.\n";
+      }
       else{
         cout << "No se ha podido leer.\n";
       }
     }
     else if (strcmp(argv[1], "OR") == 0){
-      if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) )
-        Or(resultado, ejemplo1, ejemplo2);
+      if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) ){
+        if ( DimensionesIguales(ejemplo1, ejemplo2) )
+           Or(resultado, ejemplo1, ejemplo2);
+        else
+            cout << "Dimensiones de las matrices diferentes.\n";
+      }
       else{
         cout << "No se ha podido leer.\n";
       }
@@ -72,15 +88,25 @@ int main(int argc, char* argv[]){
         }
       }
       else if (strcmp(argv[1], "AND") == 0){
-        if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) )
-          And(resultado, ejemplo1, ejemplo2);
+        if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2){
+            if ( DimensionesIguales(ejemplo1, ejemplo2) )
+                And(resultado, ejemplo1, ejemplo2);
+            else
+                cout << "Dimensiones de las matrices diferentes.\n";
+       }
         else{
           cout << "No se ha podido leer.\n";
         }
+        
       }
       else if (strcmp(argv[1], "OR") == 0){
-        if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) )
-          Or(resultado, ejemplo1, ejemplo2);
+        if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) ){
+            if ( DimensionesIguales(ejemplo1, ejemplo2) )
+                Or(resultado, ejemplo1, ejemplo2);
+            else
+                cout << "Dimensiones de las matrices diferentes.\n";
+        }
+      }
         else{
           cout << "No se ha podido leer.\n";
         }
@@ -115,15 +141,25 @@ int main(int argc, char* argv[]){
         return 1;
       }
       else if (strcmp(argv[1], "AND") == 0){
-        if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) )
+        if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) ){
+            if ( DimensionesIguales(ejemplo1, ejemplo2) )
+                And(resultado, ejemplo1, ejemplo2);
+            else
+                cout << "Dimensiones de las matrices diferentes.\n";
+        }
+      }
           And(resultado, ejemplo1, ejemplo2);
         else{
           cout << "No se ha podido leer.\n";
         }
       }
       else if (strcmp(argv[1], "OR") == 0){
-        if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) )
-          Or(resultado, ejemplo1, ejemplo2);
+        if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) ){
+            if ( DimensionesIguales(ejemplo1, ejemplo2) )
+                Or(resultado, ejemplo1, ejemplo2);
+            else
+                cout << "Dimensiones de las matrices diferentes.\n";
+        }
         else{
           cout << "No se ha podido leer.\n";
         }
