@@ -32,8 +32,8 @@ void Traspuesta(MatrizBit& res,const MatrizBit& m){
   Inicializar(res, columnas, filas);
   for (int i=0; i< filas; i++){
     for (int j=0; j< columnas; j++)
-      aux = Get(m, filas, columnas);
-      Set(res, columnas, filas, aux);
+      aux = Get(m, i, j);
+      Set(res, j, i, aux);
   }
 }
 void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
@@ -47,8 +47,8 @@ void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
     
     for (int i=0; i < filas; i++){
       for (int j=0; j< columnas; j++){
-        aux = Get(m1, filas, columnas) && Get(m2, filas, columnas);
-        Set(res, filas, columnas, aux);
+        aux = Get(m1, i, j) && Get(m2, i, j);
+        Set(res, i, j, aux);
       }
     }
   }
@@ -64,8 +64,8 @@ void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
     
     for (int i=0; i < filas; i++){
       for (int j=0; j< columnas; j++){
-        aux = Get(m1, filas, columnas) || Get(m2, filas, columnas);
-        Set(res, filas, columnas, aux);
+        aux = Get(m1, i, j) || Get(m2, i, j);
+        Set(res, i, j, aux);
       }
     }
   }
