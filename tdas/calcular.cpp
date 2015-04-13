@@ -124,14 +124,15 @@ int main(int argc, char* argv[]){
       else if (strcmp(argv[1], "OR") == 0){
         if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) )
           Or(resultado, ejemplo1, ejemplo2);
-        }
         else{
           cout << "No se ha podido leer.\n";
         }
+      }
       else{
         cout << "Operación inválida";
         booleano = false;
       }
+      
       if (booleano)
         Escribir (cout, resultado);
     }
