@@ -16,6 +16,90 @@ bool Escribir(std::ostream& os,const MatrizBit& m){
     return exito;
 }
 
+bool Leer(std::istream& is, MatrizBit& m){
+  bool exito = true;
+  if (is.fail())
+      exito = false;
+  else{
+      if ( (is.peek() != 'X') && (is.peek() != '.')){ // 1
+        int filas, columnas;
+        bool aux;
+        
+        is >> filas;
+        is >> columnas;
+        
+        if (Inicializar(m, filas, columnas)){
+              for (int i=0; i< filas; i++){
+                for (int j=0; j< columnas; j++){
+                  is >> aux;
+                  Set(m, i, j, aux);
+                }
+              }
+        }
+        else{ 
+              cout << "No se ha podido leer la matriz." << endl;
+              exito = false; 
+        }
+      }
+      else if (is.peek() == 'X' || is.peek() == '.'){ // 2
+        int i=0, j=0, k=0, columnas;
+        char caracter;
+        bool buffer[128];
+        while ((is.peek() == 'X' || is.peek() == '.') && (k < 128)){
+          j=0; 
+            while(is.peek() != '\n'){
+              is >> caracter;
+              if (caracter == 'X')
+                buffer[k] = true;
+              else
+                buffer[k] = false;
+              
+              j++;
+              k++;
+            }
+            
+          if (i == 0){
+            columnas = j;
+          }
+          else{
+            if (columnas != j)
+               exito = false;
+          }
+          i++;
+          while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
+            is.get(caracter); // Controlamos la entrada de datos saltando línea
+        }
+        
+        if (k = 128){
+          exito = false;
+        }
+        else{
+          if (Inicializar(m, i, columnas){
+          for (int l=0; l< Filas(m); l++ ){
+              for (int p=0; p< Columnas(m); p++){
+                Set(m, l, p, buffer[l*Columnas(m) + p]);
+              }
+            }
+          }
+          else
+            exito = false;
+        }
+      }
+      else  // 3
+       exito = false;
+     
+      
+  }
+  return exito;
+}
+
+bool Leer(const char nombre[],MatrizBit& m){
+  ifstream is(nombre);
+  bool exito = Leer(is, m);
+  
+  return exito;
+}
+
 bool Escribir(const char nombre[], const MatrizBit& m){
   ofstream os(nombre);
   bool exito= Escribir(os, m);
