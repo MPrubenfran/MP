@@ -126,7 +126,7 @@ void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   bool aux;
   
   if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-    cout << "OLE OLE"
+    cout << "OLE OLE";
     filas = Filas(m1);
     columnas = Columnas(m1);
     Inicializar(res, filas, columnas);
@@ -139,7 +139,7 @@ void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
     }
   }
   else
-    cout << "NO."
+    cout << "NO.";
 }
 void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   int filas, columnas;
