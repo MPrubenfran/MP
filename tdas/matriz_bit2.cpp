@@ -11,6 +11,8 @@ using namespace std
 
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
+  m.filas = fils;
+  m.columnas = cols;
   if (fils * cols > 100)
     inicializar = false;
   if (inicializar){
