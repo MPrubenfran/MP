@@ -14,14 +14,14 @@ int main(int argc, char* argv[]){
 /////////////////////////////
   else if (argc == 2){ // Si no hemos dado parámetros leemos los dos ficheros por la entrada estándar.
     if (strcmp(argv[1], "NOT") == 0){
-      if (Leer(cin, ejemplo1))
+      if ( Leer(cin, ejemplo1) )
         Not(resultado, ejemplo1);
       else{
         cout << "No se ha podido leer.\n";
       }
     }
     else if (strcmp(argv[1], "TRS") == 0){
-      if (Leer(cin, ejemplo1))
+      if ( Leer(cin, ejemplo1) )
         Traspuesta(resultado, ejemplo1);
       else{
         cout << "No se ha podido leer.\n";
@@ -45,6 +45,7 @@ int main(int argc, char* argv[]){
       cout << "Operación inválida";
       booleano = false;
     }
+    
     if (booleano)
       Escribir(cout, resultado);
   }
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]){
         }
       }
       else if (strcmp(argv[1], "TRS") == 0){
-        if ( Leer(f, ejemplo1) &&)
+        if ( Leer(f, ejemplo1) )
           Traspuesta(resultado, ejemplo1);
         else{
           cout << "No se ha podido leer.\n";
@@ -129,9 +130,12 @@ int main(int argc, char* argv[]){
         }
       else{
         cout << "Operación inválida";
+        booleano = false;
       }
+      if (booleano)
+        Escribir (cout, resultado);
     }
-  }
+  
 
 cout << endl;
 }
