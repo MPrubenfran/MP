@@ -51,23 +51,22 @@ bool Leer(std::istream& is, MatrizBit& m){
       if ( (is.peek() != 'X') && (is.peek() != '.')){ // 1
         is >> m.filas;
          is >> m.columnas;
-
-        if (! is.fail() && m.filas < 11 && m.columnas < 11){
-              for (int i=0; i< m.filas; i++){
-                for (int j=0; j< m.columnas; j++)
-                is >> m.matriz[i][j];
-              }
-        }
-        else{ 
-              cout << "No se ha podido leer la matriz." << endl;
-              exito = false; 
-        }
+          if (! is.fail() && m.filas < 11 && m.columnas < 11){
+                for (int i=0; i< m.filas; i++){
+                  for (int j=0; j< m.columnas; j++){
+                    is >> m.matriz[i][j];
+                  }
+                }
+          }
+          else{ 
+                cout << "No se ha podido leer la matriz." << endl;
+                exito = false; 
+          }
       }
       else if (is.peek() == 'X' || is.peek() == '.'){ // 2
-        int i=0, j=0;
+        int i=0, j=0, k=0, columnas;
         char caracter;
         bool buffer[128];
-        int k=0, columnas;
         while (is.peek() == 'X' || is.peek() == '.'){
           j=0; 
             while(is.peek() != '\n'){
@@ -99,7 +98,6 @@ bool Leer(std::istream& is, MatrizBit& m){
           }
         }
       }
-        //Lectura2(); //true: éxito
       else  // 3
        exito = false;
      
