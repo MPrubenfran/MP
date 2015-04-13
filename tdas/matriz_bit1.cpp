@@ -94,7 +94,7 @@ bool Leer(std::istream& is, MatrizBit& m){
         Inicializar(m, i, columnas);
         for (int l=0; l< Filas(m); l++ ){
           for (int p=0; p< Columnas(m); p++){
-            Set(m, l, p, buffe[i*Columnas(m) + p]);
+            Set(m, l, p, buffer[i*Columnas(m) + p]);
           }
         }
       }
