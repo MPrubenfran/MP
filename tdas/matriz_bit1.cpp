@@ -64,30 +64,40 @@ bool Leer(std::istream& is, MatrizBit& m){
         }
       }
       else if (is.peek() == 'X' || is.peek() == '.'){ // 2
-        int i=0, j;
+        int i=0, j=0;
         char caracter;
-        
+        bool buffer[128];
+        int k=0, columnas;
         while (is.peek() == 'X' || is.peek() == '.'){
-          j=0;
+          j=0; 
             while(is.peek() != '\n'){
               is >> caracter;
               if (caracter == 'X')
-                Set(m, i, j, true);
+                buffer[k] = true;
               else
-                Set(m, i, j, false);;
+                buffer[k] = false;
               
               j++;
+              k++;
             }
             
-          if (i == 0)
-            m.columnas = j;
+          if (i == 0){
+            columnas = j;
+          }
+          else{
+            if (columnas != j)
+               exito = false;
+          }
           i++;
-            
-            while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
-              is.get(caracter); // Controlamos la entrada de datos saltando línea
-          
+          while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
+            is.get(caracter); // Controlamos la entrada de datos saltando línea
         }
-        m.filas =i;
+        Inicializar(m, i, columnas);
+        for (int l=0; l< Filas(m); l++ ){
+          for (int p=0; p< Columnas(m); p++){
+            Set(m, l, p, buffe[i*Columnas(m) + p]);
+          }
+        }
       }
         //Lectura2(); //true: éxito
       else  // 3
