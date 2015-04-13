@@ -70,11 +70,11 @@ bool Leer(std::istream& is, MatrizBit& m){
             is.get(caracter); // Controlamos la entrada de datos saltando línea
         }
         
-        if (k = 128){
+        if (k == 128){
           exito = false;
         }
         else{
-          if (Inicializar(m, i, columnas){
+          if (Inicializar(m, i, columnas)){
           for (int l=0; l< Filas(m); l++ ){
               for (int p=0; p< Columnas(m); p++){
                 Set(m, l, p, buffer[l*Columnas(m) + p]);
