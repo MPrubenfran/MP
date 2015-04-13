@@ -81,7 +81,7 @@ void Not(MatrizBit& res,const MatrizBit& m){
   
   for (int i=0; i < filas; i++){
     for (int j=0; j < columnas; j++){
-      aux = !Get(m, filas, columnas);
+      aux = !Get(m, i, j);
       Set(res, filas, columnas, aux);
     }
   }
