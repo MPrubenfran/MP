@@ -124,39 +124,34 @@ void Traspuesta(MatrizBit& res,const MatrizBit& m){
 void And(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   int filas, columnas;
   bool aux;
+
+  filas = Filas(m1);
+  columnas = Columnas(m1);
+  Inicializar(res, filas, columnas);
   
-  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-    cout << "OLE OLE";
-    filas = Filas(m1);
-    columnas = Columnas(m1);
-    Inicializar(res, filas, columnas);
-    
-    for (int i=0; i < filas; i++){
-      for (int j=0; j< columnas; j++){
-        aux = Get(m1, i, j) && Get(m2, i, j);
-        Set(res, i, j, aux);
-      }
+  for (int i=0; i < filas; i++){
+    for (int j=0; j< columnas; j++){
+      aux = Get(m1, i, j) && Get(m2, i, j);
+      Set(res, i, j, aux);
     }
   }
-  else
-    cout << "NO.";
+
 }
 void Or(MatrizBit& res,const MatrizBit& m1,const MatrizBit& m2){
   int filas, columnas;
   bool aux;
   
-  if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) ){
-    filas = Filas(m1);
-    columnas = Columnas(m1);
-    Inicializar(res, filas, columnas);
-    
-    for (int i=0; i < filas; i++){
-      for (int j=0; j< columnas; j++){
-        aux = Get(m1, i, j) || Get(m2, i, j);
-        Set(res, i, j, aux);
-      }
+  filas = Filas(m1);
+  columnas = Columnas(m1);
+  Inicializar(res, filas, columnas);
+  
+  for (int i=0; i < filas; i++){
+    for (int j=0; j< columnas; j++){
+      aux = Get(m1, i, j) || Get(m2, i, j);
+      Set(res, i, j, aux);
     }
   }
+  
 }
 void Not(MatrizBit& res,const MatrizBit& m){
   int filas, columnas;
