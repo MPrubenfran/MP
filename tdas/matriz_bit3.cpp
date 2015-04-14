@@ -2,8 +2,7 @@
 #include <string>
 #include <fstream>
 #include "matriz_bit.h" // Aquí se define el valor de CUAL_COMPILO
-#include "matriz_operaciones.cpp"
-using namespace std
+using namespace std;
 /////////////////////////////////////////////////////////////////////////////////////////////////matriz_bit.cpp
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
@@ -52,75 +51,4 @@ bool Get(const MatrizBit& m,int f,int c){
 void Set(MatrizBit& m, int f,int c,bool v){
   if ( (f < Filas(m)) && (c < Columnas(m) )
     m.matriz[f*Columnas(m) + c] = v;
-}
-
-
-/////////////////////////////////////Resto de funcinoes
-bool Leer(std::istream& is, MatrizBit& m){
-  bool exito = true;
-  int filas, columnas;
-  char caracter;
-  if (is.fail())
-    exito = false;
-  else{
-      if (is.peek() < 101){ // 1
-        is >> filas;
-        if (is.peek() < 101){
-          is >> columnas;
-        // Lectura1(); //true: éxito
-        //////////////////////////////////////
-        if (! is.fail() && filas*columnas < 101){
-          Inicializar(m, filas, columnas),
-          for (int i=0; i< filas; i++){
-            for (int j=0; j< columnas; j++){
-              is >> caracter;
-              if (caracter == 1)
-                m.matriz[i*columnas + j] = true;
-            }
-          }
-        }
-        else
-          exito=false;
-      }
-      else
-        exito= false;
-    }
-    else if (is.peek() == 'X' || is.peek() == '.'){ // 2
-      int i=0, j;
-      filas = columnas = 0;
-      unsigned int dim=0, aux=0;
-      while (is.peek() == 'X' || is.peek() == '.'){
-          j=0;
-          while(is.peek() != '\n' && is.peek() != '\t'){
-            is >> caracter;
-            if (caracter == 'X')
-              m.matriz[i*columnas + j] = true;
-            else
-              m.matriz[i*columnas + j] = false;
-            j++;
-          }
-        if (i == 0)
-          columnas = j;
-        i++;
-        while ( (is.peek() == '\n') || (is.peek() == '\t') || (is.peek() == ' ') )
-          is.get(caracter); // Controlamos la entrada de datos saltando línea
-      }
-      filas =i;
-      
-        dim = (dim | columnas); // Operador OR a nivel de bit.
-        aux = (filas << 16);
-        dim += aux;
-        m.dimension = dim;
-            
-    }
-    else // 3
-      exito = false;
-  }
-    return exito;
-}
-
-bool Leer(const char nombre[],MatrizBit& m){
-  ifstream is(nombre);
-  bool exito = Leer(is, m);
-  return exito;
 }
