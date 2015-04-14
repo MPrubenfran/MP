@@ -11,7 +11,7 @@ bool Inicializar (MatrizBit& m, int fils, int cols){
     inicializar = false;
   if (inicializar){
     for (int i=0; i<4; i++){
-      matriz[i]=0;
+      m.matriz[i]=0;
     }
     m.dimension = (fils << 8) + cols;
   }
@@ -32,7 +32,7 @@ bool Get(const MatrizBit& m, int f, int c){
   char caracter;
   bool casilla;
   int pos, e, d;
-  if ((f < Filas(m)) && (c < Columnas(m)){
+  if ((f < Filas(m)) && (c < Columnas(m))){
     pos = f*Columnas(m) + c;
     e = pos / 32;
     d = pos % 32;
@@ -45,7 +45,7 @@ void Set(MatrizBit& m, int f,int c,bool v){
   unsigned int aux;
   int pos, e, d;
   
-  if ( (f < Filas(m)) && (c < Columnas(m) ){
+  if ( (f < Filas(m)) && (c < Columnas(m) )){
     pos = f*Columnas(m) + c;
     e = pos / 32;
     d = pos % 32;
