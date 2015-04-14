@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
       }
     }
     else{
-      cout << "Operación inválida";
+      cout << "Operación inválida.\n";
       booleano = false;
     }
     
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
   else if (argc == 3){ 
     ifstream f(argv[2]);
     if (!f) {
-      cerr << "Error: no se abre " << argv[1] << "." << endl;
+      cerr << "Error: no se abre " << argv[2] << "." << endl;
       return 1;
     }
     else{
@@ -183,7 +183,7 @@ int main(int argc, char* argv[]){
         }
       }
       else{
-        cout << "Operación inválida";
+        cout << "Operación inválida.\n";
         booleano = false;
       }
       
