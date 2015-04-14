@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
             else
                 cout << "Dimensiones de las matrices diferentes.\n";
         }
-        else{
+        else
             cout << "No se ha podido leer.\n";
       }
       else{
