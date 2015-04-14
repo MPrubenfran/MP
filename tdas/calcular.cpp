@@ -76,16 +76,14 @@ int main(int argc, char* argv[]){
       if (strcmp(argv[1], "NOT") == 0){
         if ( Leer(f, ejemplo1) )
           Not(resultado, ejemplo1);
-        else{
+        else
           cout << "No se ha podido leer.\n";
-        }
       }
       else if (strcmp(argv[1], "TRS") == 0){
         if ( Leer(f, ejemplo1) )
           Traspuesta(resultado, ejemplo1);
-        else{
+        else
           cout << "No se ha podido leer.\n";
-        }
       }
       else if (strcmp(argv[1], "AND") == 0){
         if (Leer(f, ejemplo1) && Leer(cin, ejemplo2)){
@@ -94,9 +92,8 @@ int main(int argc, char* argv[]){
             else
                 cout << "Dimensiones de las matrices diferentes.\n";
         }
-        else{
+        else
           cout << "No se ha podido leer.\n";
-        }
       }
       else if (strcmp(argv[1], "OR") == 0){
         if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) ){
@@ -106,17 +103,15 @@ int main(int argc, char* argv[]){
                 cout << "Dimensiones de las matrices diferentes.\n";
         }
       }
-        else{
-          cout << "No se ha podido leer.\n";
-        }
-      }
-      else{
+    else{
+        cout << "No se ha podido leer.\n";
+    }
+    else{
         cout << "Operación inválida";
         booleano = false;
-      }
-      if (booleano)
+    }
+    if (booleano)
         Escribir(cout, resultado);
-      
     }
   }
 ///////////////////////////// Ambas matrices se leen desde fichero.
