@@ -18,9 +18,7 @@ bool Inicializar (MatrizBit& m, int fils, int cols){
   if (inicializar){
     for (int i=0; i<fils*cols; i++)
         m.matriz[i] = 0;
-    }
   }
-  
   return inicializar; 
 }
 
