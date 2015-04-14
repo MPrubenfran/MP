@@ -97,8 +97,7 @@ int main(int argc, char* argv[]){
         else{
           cout << "No se ha podido leer.\n";
         }
-        
-      
+      }
       else if (strcmp(argv[1], "OR") == 0){
         if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) ){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
