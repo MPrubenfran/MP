@@ -5,7 +5,6 @@
 #include "matriz_operaciones.h"
 using namespace std;
 
-
 bool  DimensionesIguales(const MatrizBit& m1, const MatrizBit& m2){
     bool exito = false;
     if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) )
