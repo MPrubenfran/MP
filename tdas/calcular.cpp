@@ -88,17 +88,17 @@ int main(int argc, char* argv[]){
         }
       }
       else if (strcmp(argv[1], "AND") == 0){
-        if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2){
+        if (Leer(f, ejemplo1) && Leer(cin, ejemplo2)){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
                 And(resultado, ejemplo1, ejemplo2);
             else
                 cout << "Dimensiones de las matrices diferentes.\n";
-       }
+        }
         else{
           cout << "No se ha podido leer.\n";
         }
         
-      }
+      
       else if (strcmp(argv[1], "OR") == 0){
         if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) ){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
