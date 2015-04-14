@@ -7,11 +7,11 @@ using namespace std;
 bool Inicializar (MatrizBit& m, int fils, int cols){
   bool inicializar = true;
   unsigned int dim=0, aux=0;
-  if( (fils * cols > 100 )
+  if( (fils * cols > 100 ) )
     inicializar = false;
     
     if (inicializar){
-      for (int i=0; i<fils i++){
+      for (int i=0; i<fils; i++){
         for (int j=0; j<cols; j++){
         m.matriz[i*cols + j] = 0;
         }
@@ -36,7 +36,7 @@ int Columnas (const MatrizBit& m){
 bool Get(const MatrizBit& m,int f,int c){
   char caracter;
   bool casilla;
-  if ( (f< Filas(m)) && (c<Columnas(m) )
+  if ( (f< Filas(m)) && (c<Columnas(m)) )
     caracter= m.matriz[f*Columnas(m) + c];
   else
     return 0;
@@ -49,6 +49,6 @@ bool Get(const MatrizBit& m,int f,int c){
 }
 
 void Set(MatrizBit& m, int f,int c,bool v){
-  if ( (f < Filas(m)) && (c < Columnas(m) )
+  if ( (f < Filas(m)) && (c < Columnas(m)) )
     m.matriz[f*Columnas(m) + c] = v;
 }
