@@ -5,6 +5,7 @@
 #include "matriz_operaciones.h"
 using namespace std;
 
+
 bool  DimensionesIguales(const MatrizBit& m1, const MatrizBit& m2){
     bool exito = false;
     if ( (Filas(m1) == Filas(m2)) && (Columnas(m1) == Columnas(m2)) )
@@ -24,6 +25,7 @@ int main(int argc, char* argv[]){
       if ( Leer(cin, ejemplo1) )
         Not(resultado, ejemplo1);
       else{
+        booleano = false;  
         cout << "No se ha podido leer.\n";
       }
     }
@@ -31,6 +33,7 @@ int main(int argc, char* argv[]){
       if ( Leer(cin, ejemplo1) )
         Traspuesta(resultado, ejemplo1);
       else{
+        booleano = false;
         cout << "No se ha podido leer.\n";
       }  
     }
@@ -38,10 +41,13 @@ int main(int argc, char* argv[]){
       if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) ){
         if ( DimensionesIguales(ejemplo1, ejemplo2) )
             And(resultado, ejemplo1, ejemplo2);
-        else
+        else{
+            booleano = false;
             cout << "Dimensiones de las matrices diferentes.\n";
+        }
       }
       else{
+        booleano = false;
         cout << "No se ha podido leer.\n";
       }
     }
@@ -49,10 +55,13 @@ int main(int argc, char* argv[]){
       if ( Leer(cin, ejemplo1) && Leer(cin, ejemplo2) ){
         if ( DimensionesIguales(ejemplo1, ejemplo2) )
            Or(resultado, ejemplo1, ejemplo2);
-        else
+        else{
+            booleano = false;
             cout << "Dimensiones de las matrices diferentes.\n";
+        }
       }
       else{
+        booleano = false;
         cout << "No se ha podido leer.\n";
       }
     }
@@ -68,48 +77,60 @@ int main(int argc, char* argv[]){
   else if (argc == 3){ 
     ifstream f(argv[2]);
     if (!f) {
-      cerr << "Error: no se abre " << argv[1] << endl;
+      cerr << "Error: no se abre " << argv[1] << "." << endl;
       return 1;
     }
     else{
       if (strcmp(argv[1], "NOT") == 0){
         if ( Leer(f, ejemplo1) )
           Not(resultado, ejemplo1);
-        else
+        else{
+          booleano = false;
           cout << "No se ha podido leer.\n";
+        }
       }
       else if (strcmp(argv[1], "TRS") == 0){
         if ( Leer(f, ejemplo1) )
           Traspuesta(resultado, ejemplo1);
-        else
+        else{
+          booleano = false;        
           cout << "No se ha podido leer.\n";
+        }
       }
       else if (strcmp(argv[1], "AND") == 0){
         if (Leer(f, ejemplo1) && Leer(cin, ejemplo2)){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
                 And(resultado, ejemplo1, ejemplo2);
-            else
+            else{
+                booleano = false;
                 cout << "Dimensiones de las matrices diferentes.\n";
+            }
         }
-        else
+        else{
+          booleano = false;
           cout << "No se ha podido leer.\n";
+        }
       }
       else if (strcmp(argv[1], "OR") == 0){
         if ( Leer(f, ejemplo1) && Leer(cin, ejemplo2) ){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
                 Or(resultado, ejemplo1, ejemplo2);
-            else
+            else{
+                booleano = false;
                 cout << "Dimensiones de las matrices diferentes.\n";
+            }
         }
-        else
+        else{
+            booleano = false;        
             cout << "No se ha podido leer.\n";
+        }
       }
       else{
         cout << "Operación inválida";
         booleano = false;
       }
       
-    if (booleano)
+      if (booleano)
         Escribir(cout, resultado);
     }
   }
@@ -137,10 +158,13 @@ int main(int argc, char* argv[]){
         if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) ){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
                 And(resultado, ejemplo1, ejemplo2);
-            else
+            else{
+                booleano = false;
                 cout << "Dimensiones de las matrices diferentes.\n";
+            }
         }
         else{
+          booleano = false;
           cout << "No se ha podido leer.\n";
         }
       }
@@ -148,10 +172,13 @@ int main(int argc, char* argv[]){
         if ( Leer(f, ejemplo1) && Leer(g, ejemplo2) ){
             if ( DimensionesIguales(ejemplo1, ejemplo2) )
                 Or(resultado, ejemplo1, ejemplo2);
-            else
+            else{
+                booleano = false;
                 cout << "Dimensiones de las matrices diferentes.\n";
+            }
         }
         else{
+          booleano = false;        
           cout << "No se ha podido leer.\n";
         }
       }
