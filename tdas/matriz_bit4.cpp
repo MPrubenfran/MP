@@ -29,16 +29,16 @@ int Columnas (const MatrizBit& m){
 }
 
 bool Get(const MatrizBit& m, int f, int c){
-  char caracter;
-  bool casilla;
+  bool casilla, exito=false;
   int pos, e, d;
   if ((f < Filas(m)) && (c < Columnas(m))){
     pos = f*Columnas(m) + c;
     e = pos / 32;
     d = pos % 32;
     casilla = (m.matriz[e] >> d) & 1; // En todo caso sería [>> (31 -d)].
+    exito=true;
   }
-  return casilla;
+  return exito;
 }
 
 void Set(MatrizBit& m, int f,int c,bool v){
@@ -51,9 +51,9 @@ void Set(MatrizBit& m, int f,int c,bool v){
     d = pos % 32;
     aux = 1 << d;
     
-    matriz[e] = matriz[e] | aux;
+    m.matriz[e] = m.matriz[e] | aux;
     aux *= v;
     
-    matriz[e] = matriz[e] & aux;
+    m.matriz[e] = m.matriz[e] & aux;
   }
 }
