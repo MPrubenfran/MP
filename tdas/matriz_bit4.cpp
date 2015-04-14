@@ -29,16 +29,20 @@ int Columnas (const MatrizBit& m){
 }
 
 bool Get(const MatrizBit& m, int f, int c){
-  bool casilla, exito=false;
-  int pos, e, d;
+  bool casilla;
+  int pos, e, d, booleano;
   if ((f < Filas(m)) && (c < Columnas(m))){
     pos = f*Columnas(m) + c;
     e = pos / 32;
     d = pos % 32;
     casilla = (m.matriz[e] >> d) & 1; // En todo caso sería [>> (31 -d)].
-    exito=true;
+    booleano = (m.matriz[e] >> d) & 1; 
+      if (booleano == 1)
+        casilla = true;
+      else if (booleano == 0)
+        casilla = false;
   }
-  return exito;
+return casilla; // antes devolvía un bool exito que al entrar al "if ((f < Filas(m)) && (c < Columnas(m)))" se hacía siempre true
 }
 
 void Set(MatrizBit& m, int f,int c,bool v){
@@ -51,9 +55,16 @@ void Set(MatrizBit& m, int f,int c,bool v){
     d = pos % 32;
     aux = 1 << d;
     
+    aux = ~aux;
+    m.matriz[e] = m.matriz[e] & aux
+    if (v){
+      aux = ~ aux;
+      m.matriz[e] = m.matriz[e] | aux;
+    }
+    /*
     m.matriz[e] = m.matriz[e] | aux;
-    aux *= v;
+    aux *= v; 
+    m.matriz[e] = m.matriz[e] & aux;*/
     
-    m.matriz[e] = m.matriz[e] & aux;
   }
 }
