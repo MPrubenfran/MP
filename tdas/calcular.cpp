@@ -102,14 +102,14 @@ int main(int argc, char* argv[]){
             else
                 cout << "Dimensiones de las matrices diferentes.\n";
         }
+        else{
+            cout << "No se ha podido leer.\n";
       }
-    else{
-        cout << "No se ha podido leer.\n";
-    }
-    else{
+      else{
         cout << "Operación inválida";
         booleano = false;
-    }
+      }
+      
     if (booleano)
         Escribir(cout, resultado);
     }
@@ -141,8 +141,6 @@ int main(int argc, char* argv[]){
             else
                 cout << "Dimensiones de las matrices diferentes.\n";
         }
-      }
-          And(resultado, ejemplo1, ejemplo2);
         else{
           cout << "No se ha podido leer.\n";
         }
@@ -166,7 +164,7 @@ int main(int argc, char* argv[]){
       if (booleano)
         Escribir (cout, resultado);
     }
-  
+  }
 
 cout << endl;
 }
