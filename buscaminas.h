@@ -10,8 +10,8 @@ struct Casilla{
 
 class Tablero{
 private: 
-	static const int TAM = 20;
-	Casilla datos[TAM][TAM];
+	static int TAM;
+	Casilla datos*;
 	int filas, columnas;
 public:
     void Inicializar(int fil, int col);
@@ -32,6 +32,7 @@ private:
 	void ImprimeCasilla(int n) const;
 public:
 	CampoMinas(int filas, int columnas, int min);
+	~CampoMinas();
 	inline	int Filas() const;
 	inline	int Columas() const;
 	bool Explosionado() const;
