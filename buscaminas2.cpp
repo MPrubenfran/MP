@@ -17,6 +17,11 @@ using namespace std;
 #define NEGRITA_ON  "\x1b[1m"
 #define INTERMITENTE  "\x1b[42m"
 
+struct CeldaPosicion{
+	int fila, columna;
+	CeldaPosicion *sig;
+};
+
 void Tablero::Inicializar(int fil, int col){
   if (fil <= TAM && col <= TAM){
 	filas = fil;
@@ -228,20 +233,64 @@ bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
 
-void CampoMinas::PulsarBoton(int fil, int col){
-	if (MinasProximas(fil, col) > 0)
-		tab.Abrir(fil,col);
-	else{
-		for (int i=fil-1; i <= fil+1; i++){
-			for (int j=col-1; j <= col+1; j++){
-				if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba
-					&& !tab.Elemento(i,j).marcada){
-					bool comprobar = (tab.Elemento(i,j).abierta);
-					tab.Abrir(i,j);
-					if (!comprobar)
-						PulsarBoton(i,j);		
+void Extraer(CeldaPosicion *&pend){
+   if (pend != 0){
+	CeldaPosicion *apuntador = pend;
+	pend = pend -> sig;
+	delete apuntador;
+   }
+}
+
+
+void Aniadir(CeldaPosicion *&pend, CeldaPosicion &celda){
+	celda.sig = pend;
+	pend = &celda;
+}
+/*
+struct CeldaPosicion{
+	int fila, columna;
+	CeldaPosicion *sig;
+};
+*/void CampoMinas::PulsarBoton(int fil, int col){
+   CeldaPosicion *pend=0;
+   bool matriz[Filas()][Columnas()];
+   bool hay_celdas;
+   for (int i=0; i< Filas();i++){
+   	for (int j=0; j<Columnas(); j++)
+   		matriz[i][j] = false;
+   }
+   if (MinasProximas(fil, col) > 0)
+ 	tab.Abrir(fil,col);
+   else{
+   	hay_celdas = true;
+   	CeldaPosicion *celda= new CeldaPosicion;
+   	Aniadir(pend, *celda);
+   	
+ 	tab.Abrir(fil,col);
+ 	matriz[fil][col] = true;
+ 	
+ 	while (hay_celdas){
+ 		if (MinasProximas(fil, col) == 0){
+		   	for (int i=fil-1; i <= fil+1; i++){
+				for (int j=col-1; j <= col+1; j++){
+					if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
+					    && !tab.Elemento(i,j).marcada && !matriz[i][j]){
+					    CeldaPosicion *c = new CeldaPosicion;
+					    Aniadir(pend, *c);	
+					}
 				}
-			}
+	   		}
+ 		}
+		if (!tab.Elemento(fil,col).marcada){
+			matriz[fil][col] = true;
+ 			Abrir(fil,col);
+			Extraer(pend);
 		}
-	}
+ 		fil = pend -> fila;
+ 		col = pend -> columna;
+		if (pend == 0)
+			hay_celdas = false;
+ 	}
+   }
+   
 }
