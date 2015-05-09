@@ -23,12 +23,9 @@ struct CeldaPosicion{
 };
 
 void Tablero::Inicializar(int fil, int col){
-  if (fil <= TAM && col <= TAM){
 	filas = fil;
 	columnas = col;
-  }
-  else
-	filas = columnas = 0;
+	datos = new Casilla[fil*col];
   for (int i=0; i<fil; i++){
 	for (int j=0; j<col; j++)
 	  Modificar(i, j, false, false, false);
@@ -46,14 +43,14 @@ int Tablero::Columnas() const{
 
 Casilla Tablero::Elemento(int fil, int col) const{
   assert(PosicionCorrecta(fil, col));
-  return datos[fil][col];
+  return datos[columnas*fil+col];
 }
 
 void Tablero::Modificar(int fil, int col, bool bom, bool ab, bool marc){
   if (fil < filas && col < columnas && fil >= 0 && col >= 0){	
-	datos[fil][col].abierta = ab;
-	datos[fil][col].bomba = bom;
-	datos[fil][col].marcada = marc;
+	datos[columnas*fil+col].abierta = ab;
+	datos[columnas*fil+col].bomba = bom;
+	datos[columnas*fil+col].marcada = marc;
   }
 }
 
@@ -63,8 +60,8 @@ void Tablero::InsertarMinas(int min){
 	while(min > 0){
 		x = rand()%filas;
 		y = rand()%columnas;		
-		if (datos[x][y].bomba == false){
-			datos[x][y].bomba = true;
+		if (datos[columnas*x+y].bomba == false){
+			datos[columnas*x+y].bomba = true;
 			min--;
 		}
 	}
@@ -72,14 +69,14 @@ void Tablero::InsertarMinas(int min){
 
 void Tablero::CambiarMarca(int f, int c){
 	if (f<filas && c< columnas && f >= 0 && c >= 0)
-		datos[f][c].marcada = !datos[f][c].marcada;
+		datos[columnas*f+c].marcada = !datos[columnas*f+c].marcada;
 	else
 		cerr << "Error en marcado.\n";
 }
 
 void Tablero::Abrir(int f, int c){
 	assert(PosicionCorrecta(f, c));
-		datos[f][c].abierta = true;
+		datos[columnas*f+c].abierta = true;
 }
 
 int CampoMinas::MinasProximas(int fil, int col) const{
@@ -98,6 +95,10 @@ CampoMinas::CampoMinas(int filas, int columnas, int min){
 	tab.Inicializar(filas, columnas);
 	tab.InsertarMinas(min);
 }
+
+CampoMinas::~CampoMinas(){
+	delete tab.datos;
+}
 inline
 int CampoMinas::Filas() const{
 	return tab.Filas();
@@ -105,6 +106,13 @@ int CampoMinas::Filas() const{
 inline
 int CampoMinas::Columas() const{
 	return tab.Columnas();
+}
+
+CampoMinas& operator=(CampoMinas &tablero){
+	tablero.datos = datos; 	
+	tablero.filas = filas;
+	tablero.columnas = columnas;
+	return tablero;
 }
 bool CampoMinas::Explosionado() const{
 	int f = tab.Filas(), c = tab.Columnas();
