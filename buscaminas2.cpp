@@ -17,15 +17,44 @@ using namespace std;
 #define NEGRITA_ON  "\x1b[1m"
 #define INTERMITENTE  "\x1b[42m"
 
+
 struct CeldaPosicion{
 	int fila, columna;
 	CeldaPosicion *sig;
 };
 
+CampoMinas::CampoMinas(int filas, int columnas, int min){
+	tab.Inicializar(filas, columnas);
+	tab.InsertarMinas(min);
+}
+
+CampoMinas::~CampoMinas(){
+	delete tab.datos;
+}
+CampoMinas& operator=(CampoMinas &tablero){
+	tablero.datos = datos; 	
+	tablero.filas = filas;
+	tablero.columnas = columnas;
+	return tablero;
+}
+
+
+void Liberar(CeldaPosicion*& pend){
+	CeldaPosicion *aux=0;
+	while(pend !=0){
+		aux=pend;
+		pend = pend ->sig;
+		delete aux;
+	}
+}
+
 void Tablero::Inicializar(int fil, int col){
+  if (fil <= TAM && col <= TAM){
 	filas = fil;
 	columnas = col;
-	datos = new Casilla[fil*col];
+  }
+  else
+	filas = columnas = 0;
   for (int i=0; i<fil; i++){
 	for (int j=0; j<col; j++)
 	  Modificar(i, j, false, false, false);
@@ -43,14 +72,14 @@ int Tablero::Columnas() const{
 
 Casilla Tablero::Elemento(int fil, int col) const{
   assert(PosicionCorrecta(fil, col));
-  return datos[columnas*fil+col];
+  return datos[fil][col];
 }
 
 void Tablero::Modificar(int fil, int col, bool bom, bool ab, bool marc){
   if (fil < filas && col < columnas && fil >= 0 && col >= 0){	
-	datos[columnas*fil+col].abierta = ab;
-	datos[columnas*fil+col].bomba = bom;
-	datos[columnas*fil+col].marcada = marc;
+	datos[fil][col].abierta = ab;
+	datos[fil][col].bomba = bom;
+	datos[fil][col].marcada = marc;
   }
 }
 
@@ -60,8 +89,8 @@ void Tablero::InsertarMinas(int min){
 	while(min > 0){
 		x = rand()%filas;
 		y = rand()%columnas;		
-		if (datos[columnas*x+y].bomba == false){
-			datos[columnas*x+y].bomba = true;
+		if (datos[x][y].bomba == false){
+			datos[x][y].bomba = true;
 			min--;
 		}
 	}
@@ -69,14 +98,14 @@ void Tablero::InsertarMinas(int min){
 
 void Tablero::CambiarMarca(int f, int c){
 	if (f<filas && c< columnas && f >= 0 && c >= 0)
-		datos[columnas*f+c].marcada = !datos[columnas*f+c].marcada;
+		datos[f][c].marcada = !datos[f][c].marcada;
 	else
 		cerr << "Error en marcado.\n";
 }
 
 void Tablero::Abrir(int f, int c){
 	assert(PosicionCorrecta(f, c));
-		datos[columnas*f+c].abierta = true;
+		datos[f][c].abierta = true;
 }
 
 int CampoMinas::MinasProximas(int fil, int col) const{
@@ -95,24 +124,13 @@ CampoMinas::CampoMinas(int filas, int columnas, int min){
 	tab.Inicializar(filas, columnas);
 	tab.InsertarMinas(min);
 }
-
-CampoMinas::~CampoMinas(){
-	delete tab.datos;
-}
 inline
 int CampoMinas::Filas() const{
 	return tab.Filas();
 }
 inline
-int CampoMinas::Columas() const{
+int CampoMinas::Columnas() const{
 	return tab.Columnas();
-}
-
-CampoMinas& operator=(CampoMinas &tablero){
-	tablero.datos = datos; 	
-	tablero.filas = filas;
-	tablero.columnas = columnas;
-	return tablero;
 }
 bool CampoMinas::Explosionado() const{
 	int f = tab.Filas(), c = tab.Columnas();
@@ -151,7 +169,7 @@ bool CampoMinas::Marcar(int fil, int col){
 
 bool CampoMinas::Abrir(int fil, int col){
 	bool exito = false;
-	if (tab.Elemento(fil,col).marcada == false && tab.Elemento(fil,col).abierta == false ){
+	if (!tab.Elemento(fil,col).marcada && !tab.Elemento(fil,col).abierta){
 		tab.Abrir(fil, col);
 		exito = true;
 	}
@@ -240,65 +258,70 @@ void CampoMinas::RevelarTablero() const{
 bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
+bool BuscarCelda (CeldaPosicion *&p, CeldaPosicion &celda){
+	bool estar = false;
+	CeldaPosicion *aux = p;
+
+	while (aux != 0 && !estar){
+		if ((aux -> fila == celda.fila) && (aux -> columna == celda.columna))
+			estar = true;
+
+		aux = aux->sig;
+	}
+	return estar;
+}
+
 
 void Extraer(CeldaPosicion *&pend){
    if (pend != 0){
-	CeldaPosicion *apuntador = pend;
-	pend = pend -> sig;
-	delete apuntador;
+		CeldaPosicion *apuntador = pend;
+		pend = pend -> sig;
+		delete apuntador;
    }
 }
 
-
-void Aniadir(CeldaPosicion *&pend, CeldaPosicion &celda){
-	celda.sig = pend;
-	pend = &celda;
+void Aniadir(CeldaPosicion *&pend, int f, int c){
+	CeldaPosicion *aux = new CeldaPosicion;
+	aux->sig = pend;
+	aux->fila = f;
+	aux->columna = c; 
+	pend = aux;
 }
-/*
-struct CeldaPosicion{
-	int fila, columna;
-	CeldaPosicion *sig;
-};
-*/void CampoMinas::PulsarBoton(int fil, int col){
-   CeldaPosicion *pend=0;
-   bool matriz[Filas()][Columnas()];
-   bool hay_celdas;
-   for (int i=0; i< Filas();i++){
-   	for (int j=0; j<Columnas(); j++)
-   		matriz[i][j] = false;
-   }
-   if (MinasProximas(fil, col) > 0)
- 	tab.Abrir(fil,col);
-   else{
-   	hay_celdas = true;
-   	CeldaPosicion *celda= new CeldaPosicion;
-   	Aniadir(pend, *celda);
-   	
- 	tab.Abrir(fil,col);
- 	matriz[fil][col] = true;
- 	
- 	while (hay_celdas){
- 		if (MinasProximas(fil, col) == 0){
-		   	for (int i=fil-1; i <= fil+1; i++){
-				for (int j=col-1; j <= col+1; j++){
-					if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
-					    && !tab.Elemento(i,j).marcada && !matriz[i][j]){
-					    CeldaPosicion *c = new CeldaPosicion;
-					    Aniadir(pend, *c);	
+
+void CampoMinas::PulsarBoton(int fil, int col){
+	CeldaPosicion *pend =0, *aux =0, celda;
+	bool hay_celdas = true;
+   if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada)
+	 	tab.Abrir(fil,col);
+   else if (!tab.Elemento(fil, col).marcada){
+		aux = pend = new CeldaPosicion;
+		pend->fila = fil; pend->columna = col; pend->sig = 0;
+	 	while (hay_celdas){
+			if (!tab.Elemento(fil,col).marcada){
+				Aniadir(aux, fil, col);
+	 			Abrir(fil,col);
+				Extraer(pend);
+			}
+		 	if (MinasProximas(fil, col) == 0 ){
+				for (int i=fil-1; i <= fil+1; i++){
+					for (int j=col-1; j <= col+1; j++){
+						celda.fila = i; celda.columna = j; 
+						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
+							&& !tab.Elemento(i,j).marcada && !BuscarCelda(aux, celda)){
+							 Aniadir(pend, i, j);
+							 Aniadir(aux, i, j);
+						}
 					}
 				}
-	   		}
- 		}
-		if (!tab.Elemento(fil,col).marcada){
-			matriz[fil][col] = true;
- 			Abrir(fil,col);
-			Extraer(pend);
+		 	}
+			if (pend == 0)
+				hay_celdas = false;
+			else{
+	  			fil = pend -> fila;
+	 			col = pend -> columna;	
+			}
 		}
- 		fil = pend -> fila;
- 		col = pend -> columna;
-		if (pend == 0)
-			hay_celdas = false;
- 	}
-   }
-   
+		Liberar(pend);
+		Liberar(aux);
+	}
 }
