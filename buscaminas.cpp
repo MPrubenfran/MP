@@ -228,19 +228,73 @@ bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
 
+/*
+void AniadirCelda(CeldaPosicion *&p, CeldaPosicion &celda){
+	CeldaPosicion *aux = p;
+	p = &celda;
+	celda.sig = aux;
+}*/
+bool BuscarCelda (CeldaPosicion *&p, CeldaPosicion &celda){
+	bool estar = false;
+	CeldaPosicion *aux = p;
+
+	while (aux != 0 && !estar){
+		if ((aux -> fila == celda.fila) && (aux -> columna == celda.columna))
+			estar = true;
+
+		aux = aux->sig;
+	}
+	return estar;
+}
+
+
+void Extraer(CeldaPosicion *&pend){
+   if (pend != 0){
+		CeldaPosicion *apuntador = pend;
+		pend = pend -> sig;
+		delete apuntador;
+   }
+}
+
+void Aniadir(CeldaPosicion *&pend, int f, int c){
+	CeldaPosicion *aux = new CeldaPosicion;
+	aux->sig = pend;
+	aux->fila = f;
+	aux->columna = c; 
+	pend = aux;
+}
+
 void CampoMinas::PulsarBoton(int fil, int col){
-	if (MinasProximas(fil, col) > 0)
-		tab.Abrir(fil,col);
-	else{
-		for (int i=fil-1; i <= fil+1; i++){
-			for (int j=col-1; j <= col+1; j++){
-				if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba
-					&& !tab.Elemento(i,j).marcada){
-					bool comprobar = (tab.Elemento(i,j).abierta);
-					tab.Abrir(i,j);
-					if (!comprobar)
-						PulsarBoton(i,j);		
+	CeldaPosicion *pend =0, *aux =0, celda;
+	bool hay_celdas = true;
+   if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada)
+	 	tab.Abrir(fil,col);
+   else if (!tab.Elemento(fil, col).marcada){
+		aux = pend = new CeldaPosicion;
+		pend->fila = fil; pend->columna = col; pend->sig = 0;
+	 	while (hay_celdas){
+			if (!tab.Elemento(fil,col).marcada){
+				Aniadir(aux, fil, col);
+	 			Abrir(fil,col);
+				Extraer(pend);
+			}
+		 	if (MinasProximas(fil, col) == 0 ){
+				for (int i=fil-1; i <= fil+1; i++){
+					for (int j=col-1; j <= col+1; j++){
+						celda.fila = i; celda.columna = j; 
+						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
+							&& !tab.Elemento(i,j).marcada && !BuscarCelda(aux, celda)){
+							 Aniadir(pend, i, j);
+							 Aniadir(aux, i, j);
+						}
+					}
 				}
+		 	}
+			if (pend == 0)
+				hay_celdas = false;
+			else{
+	  			fil = pend -> fila;
+	 			col = pend -> columna;	
 			}
 		}
 	}
