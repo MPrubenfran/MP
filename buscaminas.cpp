@@ -17,6 +17,21 @@ using namespace std;
 #define NEGRITA_ON  "\x1b[1m"
 #define INTERMITENTE  "\x1b[42m"
 
+
+struct CeldaPosicion{
+	int fila, columna;
+	CeldaPosicion *sig;
+};
+
+void Liberar(CeldaPosicion*& pend){
+	CeldaPosicion *aux=0;
+	while(pend !=0){
+		aux=pend;
+		pend = pend ->sig;
+		delete aux;
+	}
+}
+
 void Tablero::Inicializar(int fil, int col){
   if (fil <= TAM && col <= TAM){
 	filas = fil;
@@ -98,7 +113,7 @@ int CampoMinas::Filas() const{
 	return tab.Filas();
 }
 inline
-int CampoMinas::Columas() const{
+int CampoMinas::Columnas() const{
 	return tab.Columnas();
 }
 bool CampoMinas::Explosionado() const{
@@ -138,7 +153,7 @@ bool CampoMinas::Marcar(int fil, int col){
 
 bool CampoMinas::Abrir(int fil, int col){
 	bool exito = false;
-	if (tab.Elemento(fil,col).marcada == false && tab.Elemento(fil,col).abierta == false ){
+	if (!tab.Elemento(fil,col).marcada && !tab.Elemento(fil,col).abierta){
 		tab.Abrir(fil, col);
 		exito = true;
 	}
@@ -227,13 +242,6 @@ void CampoMinas::RevelarTablero() const{
 bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
-
-/*
-void AniadirCelda(CeldaPosicion *&p, CeldaPosicion &celda){
-	CeldaPosicion *aux = p;
-	p = &celda;
-	celda.sig = aux;
-}*/
 bool BuscarCelda (CeldaPosicion *&p, CeldaPosicion &celda){
 	bool estar = false;
 	CeldaPosicion *aux = p;
@@ -297,5 +305,7 @@ void CampoMinas::PulsarBoton(int fil, int col){
 	 			col = pend -> columna;	
 			}
 		}
+		Liberar(pend);
+		Liberar(aux);
 	}
 }
