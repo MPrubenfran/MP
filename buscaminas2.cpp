@@ -15,28 +15,11 @@ using namespace std;
 #define BLANCO     "\x1b[37m"
 #define NEGRO      "\x1b[30m"
 #define NEGRITA_ON  "\x1b[1m"
-#define INTERMITENTE  "\x1b[42m"
-
 
 struct CeldaPosicion{
 	int fila, columna;
 	CeldaPosicion *sig;
 };
-
-CampoMinas::CampoMinas(int filas, int columnas, int min){
-	tab.Inicializar(filas, columnas);
-	tab.InsertarMinas(min);
-}
-
-CampoMinas::~CampoMinas(){
-	delete tab.datos;
-}
-CampoMinas& operator=(CampoMinas &tablero){
-	tablero.datos = datos; 	
-	tablero.filas = filas;
-	tablero.columnas = columnas;
-	return tablero;
-}
 
 
 void Liberar(CeldaPosicion*& pend){
@@ -48,13 +31,38 @@ void Liberar(CeldaPosicion*& pend){
 	}
 }
 
-void Tablero::Inicializar(int fil, int col){
-  if (fil <= TAM && col <= TAM){
+Tablero::Tablero() :datos(0),filas(0),columnas(0){}
+
+Tablero::Tablero(const Tablero &tab){
+	int fil = tab.Filas(), col = tab.Columnas();
 	filas = fil;
 	columnas = col;
+
+	if (filas !=0 && columnas != 0)
+		datos = new Casilla[fil*col];
+	else
+		datos = 0;
+	for (int i=0; i<fil; i++){
+		for (int j=0; j<col; j++)
+			datos[i*col+j] = Elemento(i,j);
+	}
+}
+
+Tablero::~Tablero(){
+	filas = columnas = 0;
+	delete [] datos;
+}
+
+
+void Tablero::Inicializar(int fil, int col){
+  if (fil > 0 && col > 0){
+	filas = fil;
+	columnas = col;
+	datos = new Casilla[fil*col];
   }
   else
-	filas = columnas = 0;
+	fil = col = 0;
+	datos = 0;
   for (int i=0; i<fil; i++){
 	for (int j=0; j<col; j++)
 	  Modificar(i, j, false, false, false);
@@ -70,16 +78,24 @@ int Tablero::Columnas() const{
 	return columnas;
 }
 
-Casilla Tablero::Elemento(int fil, int col) const{
+Casilla Tablero::Elemento(int fil, int col) const{ // Deprecated
   assert(PosicionCorrecta(fil, col));
-  return datos[fil][col];
+  return datos[fil*columnas+col];
+}
+
+Casilla& Tablero::operator()(int fil, int col){
+	return datos[fil*columnas + col];
+}
+
+const Casilla& Tablero::operator()(int fil, int col) const{
+	return datos[fil*columnas + col];
 }
 
 void Tablero::Modificar(int fil, int col, bool bom, bool ab, bool marc){
   if (fil < filas && col < columnas && fil >= 0 && col >= 0){	
-	datos[fil][col].abierta = ab;
-	datos[fil][col].bomba = bom;
-	datos[fil][col].marcada = marc;
+	datos[fil*columnas+col].abierta = ab;
+	datos[fil*columnas+col].bomba = bom;
+	datos[fil*columnas+col].marcada = marc;
   }
 }
 
@@ -89,8 +105,8 @@ void Tablero::InsertarMinas(int min){
 	while(min > 0){
 		x = rand()%filas;
 		y = rand()%columnas;		
-		if (datos[x][y].bomba == false){
-			datos[x][y].bomba = true;
+		if (Elemento(x,y).bomba == false){
+			datos[x*columnas+y].bomba = true;
 			min--;
 		}
 	}
@@ -98,14 +114,14 @@ void Tablero::InsertarMinas(int min){
 
 void Tablero::CambiarMarca(int f, int c){
 	if (f<filas && c< columnas && f >= 0 && c >= 0)
-		datos[f][c].marcada = !datos[f][c].marcada;
+		datos[f*columnas+c].marcada = !Elemento(f, c).marcada;
 	else
 		cerr << "Error en marcado.\n";
 }
 
 void Tablero::Abrir(int f, int c){
 	assert(PosicionCorrecta(f, c));
-		datos[f][c].abierta = true;
+		datos[f*columnas+c].abierta = true;
 }
 
 int CampoMinas::MinasProximas(int fil, int col) const{
@@ -120,10 +136,56 @@ int CampoMinas::MinasProximas(int fil, int col) const{
 }
 
 
+void CampoMinas::ImprimeCasilla(int n) const{
+			if (n == 1)
+				cout << AZUL << "①  " << RESET;
+			else if (n == 2)
+				cout << VERDE << "②  " << RESET;
+			else if (n == 3)
+				cout << ROJO << "③  " << RESET;
+			else if (n == 4)
+				cout << AZUL << NEGRITA_ON << "④  " << RESET;
+			else if (n == 5)
+				cout << ROJO << NEGRITA_ON << "⑤  " << RESET;
+			else if (n == 6)
+				cout << AMARILLO << "⑥  " << RESET;
+			else if (n == 7)
+				cout << NEGRO << "⑦  " << RESET;
+			else if (n == 8)
+				cout << AMARILLO << NEGRITA_ON << "⑧  " << RESET;
+}
+
 CampoMinas::CampoMinas(int filas, int columnas, int min){
 	tab.Inicializar(filas, columnas);
 	tab.InsertarMinas(min);
+	explosion = false;
 }
+
+CampoMinas::CampoMinas(CampoMinas &campo){
+	Casilla aux;
+	int i=campo.Filas(), j=campo.Columnas();
+	tab.Inicializar(i, j);
+	for (int contador=0; contador<i; contador++){
+		for (int contador2=0; contador2<j; contador2++){
+			aux = tab.Elemento(contador, contador2);
+			tab.Modificar(contador, contador2, aux.bomba, aux.abierta, aux.marcada);
+		}
+	}
+	explosion = false;
+}
+
+
+CampoMinas::~CampoMinas(){
+	tab.~Tablero();
+}
+
+/*	tablero.datos = datos; 	
+	tablero.filas = filas;
+	tablero.columnas = columnas;*/
+CampoMinas& CampoMinas::operator = (CampoMinas &tablero){
+	return *(new CampoMinas(tablero));
+}
+
 inline
 int CampoMinas::Filas() const{
 	return tab.Filas();
@@ -133,20 +195,12 @@ int CampoMinas::Columnas() const{
 	return tab.Columnas();
 }
 bool CampoMinas::Explosionado() const{
-	int f = tab.Filas(), c = tab.Columnas();
-	bool exp = false;
-	for (int i=0; i< f && !exp; i++){
-		for (int j=0; j< c && !exp; j++){
-			if (tab.Elemento(i,j).bomba == true && tab.Elemento(i,j).abierta == true )
-				exp = true;
-		}
-	}
-	return exp;
+	return explosion;
 }
 
 bool CampoMinas::Ganado() const{
 	bool exito = false;
-	if (Explosionado() == false){
+	if (!explosion){
 		exito = true;
 		for(int i=0; i< tab.Filas() && exito; i++){
 			for (int j=0;j< tab.Columnas() && exito; j++){
@@ -171,60 +225,45 @@ bool CampoMinas::Abrir(int fil, int col){
 	bool exito = false;
 	if (!tab.Elemento(fil,col).marcada && !tab.Elemento(fil,col).abierta){
 		tab.Abrir(fil, col);
+		if (tab.Elemento(fil, col).bomba)
+			explosion = true;
 		exito = true;
 	}
 	return exito;
 }
 
-void CampoMinas::ImprimeCasilla(int n) const{
-			if (n == 1)
-				cout << AZUL << "①  " << RESET;
-			else if (n == 2)
-				cout << VERDE << "②  " << RESET;
-			else if (n == 3)
-				cout << ROJO << "③  " << RESET;
-			else if (n == 4)
-				cout << AZUL << NEGRITA_ON << "④  " << RESET;
-			else if (n == 5)
-				cout << ROJO << NEGRITA_ON << "⑤  " << RESET;
-			else if (n == 6)
-				cout << AMARILLO << "⑥  " << RESET;
-			else if (n == 7)
-				cout << NEGRO << "⑦  " << RESET;
-			else if (n == 8)
-				cout << AMARILLO << NEGRITA_ON << "⑧  " << RESET;
-}
 
-void CampoMinas::PrettyPrint() const{
-	cout << " ";
+void CampoMinas::PrettyPrint(std::ostream &os){
+	os << " ";
 	for (int i=0; i<tab.Columnas(); i++){
-		cout << setw(3) << i;
+		os << setw(3) << i;
 		if (i == 9)
-			cout << " ";
+			os << " ";
 	}
 
-	cout << endl;
+	os << endl;
 	for (int i=0; i<tab.Filas(); i++){
 		if (i<10)
-			cout << i << "  ";
+			os << i << "  ";
 		else
-			cout << i << " ";
+			os << i << " ";
 		for (int j=0; j< tab.Columnas(); j++){
 	        if (tab.Elemento(i,j).abierta == false && tab.Elemento(i,j).marcada == false)
-				cout << "●  ";
+				os << "●  ";
 			else if (MinasProximas(i,j) != 0 && tab.Elemento(i,j).abierta && !tab.Elemento(i,j).bomba)
 				ImprimeCasilla(MinasProximas(i,j));
 	        else if (tab.Elemento(i,j).abierta == false && tab.Elemento(i,j).marcada == true)
-				cout << ROJO << "⚑  " << RESET;
+				os << ROJO << "⚑  " << RESET;
 	        else if (tab.Elemento(i,j).abierta && tab.Elemento(i,j).bomba)
-				cout << AMARILLO << NEGRITA_ON  <<"💣  " << RESET;
+				os << AMARILLO << NEGRITA_ON  <<"💣  " << RESET;
 			else
-				cout << "○  ";
+				os << "○  ";
 		}
-		cout <<endl;
+		os << endl;
 	}
-	cout << endl;
+	os << endl;
 }
+
 
 void CampoMinas::RevelarTablero() const{
 	cout << " ";
@@ -258,7 +297,8 @@ void CampoMinas::RevelarTablero() const{
 bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
-bool BuscarCelda (CeldaPosicion *&p, CeldaPosicion &celda){
+
+bool BuscarCelda (CeldaPosicion *&p, const CeldaPosicion &celda){
 	bool estar = false;
 	CeldaPosicion *aux = p;
 
@@ -291,8 +331,9 @@ void Aniadir(CeldaPosicion *&pend, int f, int c){
 void CampoMinas::PulsarBoton(int fil, int col){
 	CeldaPosicion *pend =0, *aux =0, celda;
 	bool hay_celdas = true;
-   if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada)
+   if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada){
 	 	tab.Abrir(fil,col);
+	}
    else if (!tab.Elemento(fil, col).marcada){
 		aux = pend = new CeldaPosicion;
 		pend->fila = fil; pend->columna = col; pend->sig = 0;
