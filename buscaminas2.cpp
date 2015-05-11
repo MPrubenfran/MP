@@ -16,11 +16,11 @@ using namespace std;
 #define NEGRO      "\x1b[30m"
 #define NEGRITA_ON  "\x1b[1m"
 
+namespace{
 struct CeldaPosicion{
 	int fila, columna;
 	CeldaPosicion *sig;
 };
-
 
 void Liberar(CeldaPosicion*& pend){
 	CeldaPosicion *aux=0;
@@ -30,7 +30,33 @@ void Liberar(CeldaPosicion*& pend){
 		delete aux;
 	}
 }
+bool BuscarCelda (CeldaPosicion *&p, const CeldaPosicion &celda){
+	bool estar = false;
+	CeldaPosicion *aux = p;
+	while (aux != 0 && !estar){
+		if ((aux -> fila == celda.fila) && (aux -> columna == celda.columna))
+			estar = true;
+		aux = aux->sig;
+	}
+	return estar;
+}
 
+void Extraer(CeldaPosicion *&pend){
+   if (pend != 0){
+		CeldaPosicion *apuntador = pend;
+		pend = pend -> sig;
+		delete apuntador;
+   }
+}
+
+void Aniadir(CeldaPosicion *&pend, int f, int c){
+	CeldaPosicion *aux = new CeldaPosicion;
+	aux->sig = pend;
+	aux->fila = f;
+	aux->columna = c; 
+	pend = aux;
+}
+}
 Tablero::Tablero() :datos(0),filas(0),columnas(0){}
 
 Tablero::Tablero(const Tablero &tab){
@@ -51,7 +77,7 @@ Tablero::Tablero(const Tablero &tab){
 Tablero::~Tablero(){
 	filas = columnas = 0;
 	delete [] datos;
-//	datos = 0;
+	datos = 0;
 }
 
 
@@ -61,9 +87,10 @@ void Tablero::Inicializar(int fil, int col){
 	columnas = col;
 	datos = new Casilla[fil*col];
   }
-  else
+  else{
 	fil = col = 0;
 	datos = 0;
+  }
   for (int i=0; i<fil; i++){
 	for (int j=0; j<col; j++)
 	  Modificar(i, j, false, false, false);
@@ -81,15 +108,12 @@ int Tablero::Columnas() const{
 
 Casilla Tablero::Elemento(int fil, int col) const{ // Deprecated
   assert(PosicionCorrecta(fil, col));
-  	return datos[fil*columnas+col];
+  return datos[fil*columnas+col];
 }
 
 Casilla& Tablero::operator()(int fil, int col){
 	return datos[fil*columnas + col];
 }
-Tablero c;
-c.Elemento(1,1);
-Casilla aux( c(1,1) );
 
 const Casilla& Tablero::operator()(int fil, int col) const{
 	return datos[fil*columnas + col];
@@ -165,7 +189,7 @@ CampoMinas::CampoMinas(int filas, int columnas, int min){
 	explosion = false;
 }
 
-CampoMinas::CampoMinas(const CampoMinas &campo){
+CampoMinas::CampoMinas(CampoMinas &campo){
 	Casilla aux;
 	int i=campo.Filas(), j=campo.Columnas();
 	tab.Inicializar(i, j);
@@ -183,10 +207,8 @@ CampoMinas::~CampoMinas(){
 	tab.~Tablero();
 }
 
-/*	tablero.datos = datos; 	
-	tablero.filas = filas;
-	tablero.columnas = columnas;*/
-CampoMinas& CampoMinas::operator = (const CampoMinas &tablero){
+
+CampoMinas& CampoMinas::operator = (CampoMinas &tablero){
 	return *(new CampoMinas(tablero));
 }
 
@@ -302,42 +324,13 @@ bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
 
-bool BuscarCelda (CeldaPosicion *&p, const CeldaPosicion &celda){
-	bool estar = false;
-	CeldaPosicion *aux = p;
-
-	while (aux != 0 && !estar){
-		if ((aux -> fila == celda.fila) && (aux -> columna == celda.columna))
-			estar = true;
-
-		aux = aux->sig;
-	}
-	return estar;
-}
-
-
-void Extraer(CeldaPosicion *&pend){
-   if (pend != 0){
-		CeldaPosicion *apuntador = pend;
-		pend = pend -> sig;
-		delete apuntador;
-   }
-}
-
-void Aniadir(CeldaPosicion *&pend, int f, int c){
-	CeldaPosicion *aux = new CeldaPosicion;
-	aux->sig = pend;
-	aux->fila = f;
-	aux->columna = c; 
-	pend = aux;
-}
 
 void CampoMinas::PulsarBoton(int fil, int col){
 	CeldaPosicion *pend =0, *aux =0, celda;
 	bool hay_celdas = true;
    if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada){
-	 	tab.Abrir(fil,col);
-   }
+	 	Abrir(fil,col);
+	}
    else if (!tab.Elemento(fil, col).marcada){
 		aux = pend = new CeldaPosicion;
 		pend->fila = fil; pend->columna = col; pend->sig = 0;
@@ -351,8 +344,8 @@ void CampoMinas::PulsarBoton(int fil, int col){
 				for (int i=fil-1; i <= fil+1; i++){
 					for (int j=col-1; j <= col+1; j++){
 						celda.fila = i; celda.columna = j; 
-						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).marcada 
-							&& !BuscarCelda(aux, celda)){
+						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
+							&& !tab.Elemento(i,j).marcada && !BuscarCelda(aux, celda)){
 							 Aniadir(pend, i, j);
 							 Aniadir(aux, i, j);
 						}
@@ -370,6 +363,7 @@ void CampoMinas::PulsarBoton(int fil, int col){
 		Liberar(aux);
 	}
 }
+
 
 bool CampoMinas::Escribir(char* archivo){
 	int exito = false;
