@@ -51,6 +51,7 @@ Tablero::Tablero(const Tablero &tab){
 Tablero::~Tablero(){
 	filas = columnas = 0;
 	delete [] datos;
+//	datos = 0;
 }
 
 
@@ -80,12 +81,15 @@ int Tablero::Columnas() const{
 
 Casilla Tablero::Elemento(int fil, int col) const{ // Deprecated
   assert(PosicionCorrecta(fil, col));
-  return datos[fil*columnas+col];
+  	return datos[fil*columnas+col];
 }
 
 Casilla& Tablero::operator()(int fil, int col){
 	return datos[fil*columnas + col];
 }
+Tablero c;
+c.Elemento(1,1);
+Casilla aux( c(1,1) );
 
 const Casilla& Tablero::operator()(int fil, int col) const{
 	return datos[fil*columnas + col];
@@ -161,7 +165,7 @@ CampoMinas::CampoMinas(int filas, int columnas, int min){
 	explosion = false;
 }
 
-CampoMinas::CampoMinas(CampoMinas &campo){
+CampoMinas::CampoMinas(const CampoMinas &campo){
 	Casilla aux;
 	int i=campo.Filas(), j=campo.Columnas();
 	tab.Inicializar(i, j);
@@ -182,7 +186,7 @@ CampoMinas::~CampoMinas(){
 /*	tablero.datos = datos; 	
 	tablero.filas = filas;
 	tablero.columnas = columnas;*/
-CampoMinas& CampoMinas::operator = (CampoMinas &tablero){
+CampoMinas& CampoMinas::operator = (const CampoMinas &tablero){
 	return *(new CampoMinas(tablero));
 }
 
@@ -333,7 +337,7 @@ void CampoMinas::PulsarBoton(int fil, int col){
 	bool hay_celdas = true;
    if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada){
 	 	tab.Abrir(fil,col);
-	}
+   }
    else if (!tab.Elemento(fil, col).marcada){
 		aux = pend = new CeldaPosicion;
 		pend->fila = fil; pend->columna = col; pend->sig = 0;
@@ -347,8 +351,8 @@ void CampoMinas::PulsarBoton(int fil, int col){
 				for (int i=fil-1; i <= fil+1; i++){
 					for (int j=col-1; j <= col+1; j++){
 						celda.fila = i; celda.columna = j; 
-						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
-							&& !tab.Elemento(i,j).marcada && !BuscarCelda(aux, celda)){
+						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).marcada 
+							&& !BuscarCelda(aux, celda)){
 							 Aniadir(pend, i, j);
 							 Aniadir(aux, i, j);
 						}
