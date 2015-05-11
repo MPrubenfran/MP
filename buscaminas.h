@@ -16,7 +16,7 @@ public:
 	Tablero();
 	Tablero(const Tablero &tab);
 	~Tablero();
-   void Inicializar(int fil, int col);
+   	void Inicializar(int fil, int col);
 	inline int Filas() const;
 	inline int Columnas() const;
 	Casilla Elemento(int fil, int col) const; // Deprecated
