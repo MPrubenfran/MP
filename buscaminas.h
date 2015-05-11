@@ -37,9 +37,9 @@ private:
 	bool explosion;
 public:
 	CampoMinas(int filas, int columnas, int min);
-	CampoMinas(CampoMinas &campo);
+	CampoMinas(const CampoMinas &campo);
 	~CampoMinas();
-	CampoMinas& operator=(CampoMinas &tablero);
+	CampoMinas& operator=(const CampoMinas &tablero);
 	inline int Filas() const;
 	inline int Columnas() const;
 	bool Explosionado() const;
