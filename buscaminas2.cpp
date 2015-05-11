@@ -370,3 +370,30 @@ void CampoMinas::PulsarBoton(int fil, int col){
 		Liberar(aux);
 	}
 }
+
+bool CampoMinas::Escribir(char* archivo){
+	int exito = false;
+	
+	ofstream os(archivo);
+	if (os) {
+		os << "#MP−BUSCAMINAS−V1" << endl;
+		tab.filas = fil;
+		tab.columnas = col;
+		
+		for (int i = 0; i < fil; i++){
+			for (int j = 0; j < fil; j++){
+				os << tab(i, j).bomba   << " "
+				   << tab(i, j).abierta << " "
+				   << tab(i, j).marcada << " ";
+				   
+// Sobrecarga:			os << tab(i, j);
+			};
+			os << endl;
+		}
+		
+		exito = true;
+// (?)		os.close();
+	}
+	
+	return exito;
+}
