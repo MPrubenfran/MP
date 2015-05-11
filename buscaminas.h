@@ -10,14 +10,18 @@ struct Casilla{
 
 class Tablero{
 private: 
-	static int TAM;
-	Casilla datos*;
+	Casilla *datos;
 	int filas, columnas;
 public:
-    void Inicializar(int fil, int col);
-	inline	int Filas() const;
-	inline	int Columnas() const;
-	Casilla Elemento(int fil, int col) const;
+	Tablero();
+	Tablero(const Tablero &tab);
+	~Tablero();
+   void Inicializar(int fil, int col);
+	inline int Filas() const;
+	inline int Columnas() const;
+	Casilla Elemento(int fil, int col) const; // Deprecated
+	Casilla& operator()(int fil, int col);
+	const	Casilla& operator()(int fil, int col) const;
 	void Modificar(int fil, int col, bool bom, bool ab, bool marc);
 	void InsertarMinas(int min);
 	void CambiarMarca(int f, int c);
@@ -30,16 +34,19 @@ private:
 	Tablero tab;
 	int MinasProximas(int fil, int col) const;
 	void ImprimeCasilla(int n) const;
+	bool explosion;
 public:
 	CampoMinas(int filas, int columnas, int min);
+	CampoMinas(CampoMinas &campo);
 	~CampoMinas();
-	inline	int Filas() const;
-	inline	int Columas() const;
+	CampoMinas& operator=(CampoMinas &tablero);
+	inline int Filas() const;
+	inline int Columnas() const;
 	bool Explosionado() const;
 	bool Ganado() const;
 	bool Marcar(int fil, int col);
 	bool Abrir(int fil, int col);
-	void PrettyPrint() const;
+	void PrettyPrint(std::ostream &os=std::cout);
 	void RevelarTablero() const;
 	void PulsarBoton(int f, int c);
 };
