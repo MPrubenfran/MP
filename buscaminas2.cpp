@@ -364,6 +364,11 @@ void CampoMinas::PulsarBoton(int fil, int col){
 	}
 }
 
+ostream& Casilla::operator << (ostream os, Casilla casilla){
+	os << casilla.bomba   << " "
+	   << casilla.abierta << " "
+	   << casilla.marcada;
+}
 
 bool CampoMinas::Escribir(char* archivo){
 	int exito = false;
@@ -376,11 +381,7 @@ bool CampoMinas::Escribir(char* archivo){
 		
 		for (int i = 0; i < fil; i++){
 			for (int j = 0; j < fil; j++){
-				os << tab(i, j).bomba   << " "
-				   << tab(i, j).abierta << " "
-				   << tab(i, j).marcada << " ";
-				   
-// Sobrecarga:			os << tab(i, j);
+				os << casilla << " ";
 			};
 			os << endl;
 		}
