@@ -323,14 +323,12 @@ void CampoMinas::RevelarTablero() const{
 bool Tablero::PosicionCorrecta(int f, int c) const{
 	return (f>=0 && c>=0 && f< filas && c < columnas);
 }
-
-
 void CampoMinas::PulsarBoton(int fil, int col){
 	CeldaPosicion *pend =0, *aux =0, celda;
 	bool hay_celdas = true;
    if (MinasProximas(fil, col) > 0 && !tab.Elemento(fil, col).marcada){
 	 	Abrir(fil,col);
-	}
+   }
    else if (!tab.Elemento(fil, col).marcada){
 		aux = pend = new CeldaPosicion;
 		pend->fila = fil; pend->columna = col; pend->sig = 0;
@@ -343,8 +341,8 @@ void CampoMinas::PulsarBoton(int fil, int col){
 		 	if (MinasProximas(fil, col) == 0 ){
 				for (int i=fil-1; i <= fil+1; i++){
 					for (int j=col-1; j <= col+1; j++){
-						celda.fila = i; celda.columna = j; 
-						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba 
+						celda.fila = i; celda.columna = j;
+						if (tab.PosicionCorrecta(i,j) && !tab.Elemento(i,j).bomba
 							&& !tab.Elemento(i,j).marcada && !BuscarCelda(aux, celda)){
 							 Aniadir(pend, i, j);
 							 Aniadir(aux, i, j);
@@ -356,7 +354,7 @@ void CampoMinas::PulsarBoton(int fil, int col){
 				hay_celdas = false;
 			else{
 	  			fil = pend -> fila;
-	 			col = pend -> columna;	
+	 			col = pend -> columna;
 			}
 		}
 		Liberar(pend);
